@@ -13,15 +13,33 @@ export default function EventsSection() {
 
     video.muted = true;
 
-    const playVideo = async () => {
-      try {
-        await video.play();
-      } catch (error) {
-        console.log("Video autoplay prevented:", error);
-      }
-    };
+    if (
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches
+    ) {
+      return;
+    }
 
-    playVideo();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          void video.play().catch(() => undefined);
+        } else {
+          video.pause();
+        }
+      },
+      {
+        rootMargin: "200px 0px",
+      }
+    );
+
+    observer.observe(video);
+
+    return () => {
+      observer.disconnect();
+      video.pause();
+    };
   }, []);
 
   return (
@@ -37,11 +55,11 @@ export default function EventsSection() {
           <video
             ref={videoRef}
             src="/video/events.mp4"
-            autoPlay
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
+            aria-hidden="true"
             className="absolute inset-0 h-full w-full object-cover"
           />
 

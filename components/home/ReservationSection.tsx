@@ -324,6 +324,7 @@ export default function ReservationSection() {
                 <input
                   id="reservation-name"
                   type="text"
+                  required
                   autoComplete="name"
                   value={name}
                   onChange={(event) =>
@@ -346,6 +347,7 @@ export default function ReservationSection() {
                 <input
                   id="reservation-phone"
                   type="tel"
+                  required
                   inputMode="tel"
                   autoComplete="tel"
                   value={phone}
@@ -407,6 +409,7 @@ export default function ReservationSection() {
                 <input
                   id="reservation-date"
                   type="date"
+                  required
                   min={today}
                   value={date}
                   onChange={handleDateChange}
@@ -425,6 +428,7 @@ export default function ReservationSection() {
 
                 <select
                   id="reservation-time"
+                  required
                   value={time}
                   onChange={(event) => {
                     setTime(event.target.value);

@@ -38,6 +38,9 @@ export default function MenuSwitcher() {
   const categoryNavRef =
     useRef<HTMLDivElement>(null);
 
+  const menuSectionRef =
+    useRef<HTMLElement>(null);
+
   const isRestaurant =
     activeMenu === "restaurant";
 
@@ -74,38 +77,47 @@ export default function MenuSwitcher() {
   };
 
   /*
-    Detect the menu category currently
-    visible on screen.
-  */
+   * Detect the menu category currently
+   * visible on screen.
+   */
   useEffect(() => {
-    if (!activeGroup) {
-      return;
-    }
+    if (!activeGroup) return;
 
     const categoryIds =
       activeGroup.categories.map(
         (category) => category.id
       );
 
-    const sections = categoryIds
-      .map((id) =>
-        document.getElementById(id)
-      )
-      .filter(
-        (section): section is HTMLElement =>
-          section !== null
+    let sectionObserver:
+      | IntersectionObserver
+      | null = null;
+
+    let contentObserver:
+      | MutationObserver
+      | null = null;
+
+    const connectSectionObserver = () => {
+      if (sectionObserver) return true;
+
+      const sections = categoryIds
+        .map((id) =>
+          document.getElementById(id)
+        )
+        .filter(
+          (section): section is HTMLElement =>
+            section !== null
+        );
+
+      if (sections.length !== categoryIds.length) {
+        return false;
+      }
+
+      setActiveCategory(
+        activeGroup.categories[0]?.id ?? ""
       );
 
-    if (sections.length === 0) {
-      return;
-    }
-
-    setActiveCategory(
-      activeGroup.categories[0]?.id ?? ""
-    );
-
-    const observer =
-      new IntersectionObserver(
+      sectionObserver =
+        new IntersectionObserver(
         (entries) => {
           const visibleEntries = entries
             .filter(
@@ -119,73 +131,98 @@ export default function MenuSwitcher() {
             );
 
           if (visibleEntries.length > 0) {
-            setActiveCategory(
-              visibleEntries[0].target.id
+            const nextCategory =
+              visibleEntries[0].target.id;
+
+            setActiveCategory((current) =>
+              current === nextCategory
+                ? current
+                : nextCategory
             );
           }
         },
         {
           root: null,
           rootMargin:
-            "-190px 0px -55% 0px",
-          threshold: [
-            0.05,
-            0.1,
-            0.25,
-            0.5,
-          ],
+            "-150px 0px -60% 0px",
+          threshold: [0.05, 0.15, 0.3],
         }
       );
 
-    sections.forEach((section) => {
-      observer.observe(section);
-    });
+      sections.forEach((section) => {
+        sectionObserver?.observe(section);
+      });
+
+      return true;
+    };
+
+    if (!connectSectionObserver()) {
+      const menuSection =
+        menuSectionRef.current;
+
+      if (menuSection) {
+        contentObserver = new MutationObserver(
+          () => {
+            if (connectSectionObserver()) {
+              contentObserver?.disconnect();
+            }
+          }
+        );
+
+        contentObserver.observe(menuSection, {
+          childList: true,
+          subtree: true,
+        });
+      }
+    }
 
     return () => {
-      observer.disconnect();
+      sectionObserver?.disconnect();
+      contentObserver?.disconnect();
     };
   }, [activeGroup]);
 
   /*
-    Automatically scroll the active category
-    button into view horizontally.
-  */
+   * Scroll ONLY the horizontal category bar.
+   * This avoids scrollIntoView() affecting
+   * the main vertical page scroll on mobile.
+   */
   useEffect(() => {
-    if (!activeCategory) {
-      return;
-    }
+    if (!activeCategory) return;
 
     const container =
       categoryNavRef.current;
 
-    if (!container) {
-      return;
-    }
+    if (!container) return;
 
     const activeButton =
       container.querySelector<HTMLAnchorElement>(
         `[data-category-id="${activeCategory}"]`
       );
 
-    if (!activeButton) {
-      return;
-    }
+    if (!activeButton) return;
 
-    activeButton.scrollIntoView({
+    const targetLeft =
+      activeButton.offsetLeft -
+      container.clientWidth / 2 +
+      activeButton.clientWidth / 2;
+
+    container.scrollTo({
+      left: targetLeft,
       behavior: "smooth",
-      block: "nearest",
-      inline: "center",
     });
   }, [activeCategory]);
 
   return (
-    <section className="bg-[#11100e] py-20 sm:py-24 md:py-28 lg:py-32">
+    <section
+      ref={menuSectionRef}
+      className="bg-[#11100e] py-20 sm:py-24 md:py-28 lg:py-32"
+    >
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 md:px-10 lg:px-12 xl:px-16">
 
         {/* Brand heading */}
         <Reveal>
           <div className="mx-auto max-w-3xl text-center">
-
             <p
               className="text-[10px] font-semibold uppercase tracking-[0.32em] sm:text-[11px]"
               style={{
@@ -197,7 +234,6 @@ export default function MenuSwitcher() {
 
             <h2 className="font-display mt-5 text-4xl font-medium text-[#f5f1e8] sm:text-5xl md:text-6xl">
               Deux identités,
-
               <span
                 className="italic"
                 style={{
@@ -211,11 +247,10 @@ export default function MenuSwitcher() {
 
             <p className="mx-auto mt-6 max-w-xl text-sm leading-7 text-[#8f8980] md:text-base md:leading-8">
               Découvrez les deux expériences La Marquise :
-              le Restaurant et son univers raffiné, ou le Fast
-              Food pour une carte plus généreuse et
+              le Restaurant et son univers raffiné, ou le
+              Fast Food pour une carte plus généreuse et
               décontractée.
             </p>
-
           </div>
         </Reveal>
 
@@ -225,135 +260,139 @@ export default function MenuSwitcher() {
 
             {/* Restaurant */}
             <button
-  type="button"
-  onClick={() => {
-    setActiveMenu("restaurant");
-    setActiveCategory("");
-  }}
-  className={`group relative min-h-72 overflow-hidden border text-left transition-all duration-500 sm:min-h-80 ${
-    isRestaurant
-      ? "border-[#b99a5b]"
-      : "border-white/10 hover:border-white/25"
-  }`}
->
-  <Image
-    src="/images/menu/restaurant-brand.png"
-    alt="La Marquise Restaurant"
-    fill
-    sizes="(max-width: 640px) 100vw, 50vw"
-    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025]"
-  />
+              type="button"
+              aria-pressed={isRestaurant}
+              onClick={() => {
+                setActiveMenu("restaurant");
+                setActiveCategory("");
+              }}
+              className={`group relative min-h-72 overflow-hidden border text-left transition-all duration-500 sm:min-h-80 ${
+                isRestaurant
+                  ? "border-[#b99a5b]"
+                  : "border-white/10 hover:border-white/25"
+              }`}
+            >
+              <Image
+                src="/images/menu/restaurant-brand.png"
+                alt="La Marquise Restaurant"
+                fill
+                sizes="(max-width: 640px) 100vw, 50vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+              />
 
-  <div className="absolute inset-0 bg-black/55" />
-  <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/35 to-black/10" />
+              <div className="absolute inset-0 bg-black/55" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/35 to-black/10" />
 
-  {isRestaurant && (
-    <motion.span
-      layoutId="brand-indicator"
-      transition={{
-        duration: 0.4,
-        ease,
-      }}
-      className="absolute inset-x-0 top-0 z-10 h-0.5 bg-[#b99a5b]"
-    />
-  )}
+              {isRestaurant && (
+                <motion.span
+                  layoutId="brand-indicator"
+                  transition={{
+                    duration: 0.4,
+                    ease,
+                  }}
+                  className="absolute inset-x-0 top-0 z-10 h-0.5 bg-[#b99a5b]"
+                />
+              )}
 
-  <div className="relative z-10 flex min-h-72 flex-col justify-end p-6 sm:min-h-80 sm:p-8">
-    <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[#b99a5b]">
-      La Marquise
-    </p>
+              <div className="relative z-10 flex min-h-72 flex-col justify-end p-6 sm:min-h-80 sm:p-8">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[#b99a5b]">
+                  La Marquise
+                </p>
 
-    <h3 className="font-display mt-3 text-4xl text-[#f5f1e8] sm:text-5xl">
-      Restaurant
-    </h3>
+                <h3 className="font-display mt-3 text-4xl text-[#f5f1e8] sm:text-5xl">
+                  Restaurant
+                </h3>
 
-    <p className="mt-3 max-w-sm text-sm leading-6 text-white/65">
-      Cuisine internationale, orientale, bar, cocktails et sélection de vins.
-    </p>
+                <p className="mt-3 max-w-sm text-sm leading-6 text-white/65">
+                  Cuisine internationale, orientale, bar,
+                  cocktails et sélection de vins.
+                </p>
 
-    <div className="mt-6 flex items-center justify-between border-t border-white/15 pt-5">
-      <span className="text-[9px] uppercase tracking-[0.2em] text-white/45">
-        Noir · Or
-      </span>
+                <div className="mt-6 flex items-center justify-between border-t border-white/15 pt-5">
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-white/45">
+                    Noir · Or
+                  </span>
 
-      <span
-        className={`text-sm transition-all duration-300 ${
-          isRestaurant
-            ? "translate-x-1 text-[#d8c49c]"
-            : "text-white/45 group-hover:translate-x-1 group-hover:text-[#d8c49c]"
-        }`}
-      >
-        →
-      </span>
-    </div>
-  </div>
-</button>
+                  <span
+                    className={`text-sm transition-all duration-300 ${
+                      isRestaurant
+                        ? "translate-x-1 text-[#d8c49c]"
+                        : "text-white/45 group-hover:translate-x-1 group-hover:text-[#d8c49c]"
+                    }`}
+                  >
+                    →
+                  </span>
+                </div>
+              </div>
+            </button>
 
             {/* Fast Food */}
             <button
-  type="button"
-  onClick={() => {
-    setActiveMenu("fastfood");
-    setActiveCategory("");
-  }}
-  className={`group relative min-h-72 overflow-hidden border text-left transition-all duration-500 sm:min-h-80 ${
-    !isRestaurant
-      ? "border-[#9f2727]"
-      : "border-white/10 hover:border-white/25"
-  }`}
->
-  <Image
-    src="/images/menu/fastfood-brand.png"
-    alt="La Marquise Fast Food"
-    fill
-    sizes="(max-width: 640px) 100vw, 50vw"
-    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025]"
-  />
+              type="button"
+              aria-pressed={!isRestaurant}
+              onClick={() => {
+                setActiveMenu("fastfood");
+                setActiveCategory("");
+              }}
+              className={`group relative min-h-72 overflow-hidden border text-left transition-all duration-500 sm:min-h-80 ${
+                !isRestaurant
+                  ? "border-[#9f2727]"
+                  : "border-white/10 hover:border-white/25"
+              }`}
+            >
+              <Image
+                src="/images/menu/fastfood-brand.png"
+                alt="La Marquise Fast Food"
+                fill
+                sizes="(max-width: 640px) 100vw, 50vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+              />
 
-  <div className="absolute inset-0 bg-black/40" />
-  <div className="absolute inset-0 bg-linear-to-t from-[#2a0505]/95 via-black/30 to-transparent" />
+              <div className="absolute inset-0 bg-black/40" />
+              <div className="absolute inset-0 bg-linear-to-t from-[#2a0505]/95 via-black/30 to-transparent" />
 
-  {!isRestaurant && (
-    <motion.span
-      layoutId="brand-indicator"
-      transition={{
-        duration: 0.4,
-        ease,
-      }}
-      className="absolute inset-x-0 top-0 z-10 h-0.5 bg-[#9f2727]"
-    />
-  )}
+              {!isRestaurant && (
+                <motion.span
+                  layoutId="brand-indicator"
+                  transition={{
+                    duration: 0.4,
+                    ease,
+                  }}
+                  className="absolute inset-x-0 top-0 z-10 h-0.5 bg-[#9f2727]"
+                />
+              )}
 
-  <div className="relative z-10 flex min-h-72 flex-col justify-end p-6 sm:min-h-80 sm:p-8">
-    <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[#d95a55]">
-      La Marquise
-    </p>
+              <div className="relative z-10 flex min-h-72 flex-col justify-end p-6 sm:min-h-80 sm:p-8">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[#d95a55]">
+                  La Marquise
+                </p>
 
-    <h3 className="font-display mt-3 text-4xl text-[#f5f1e8] sm:text-5xl">
-      Fast Food
-    </h3>
+                <h3 className="font-display mt-3 text-4xl text-[#f5f1e8] sm:text-5xl">
+                  Fast Food
+                </h3>
 
-    <p className="mt-3 max-w-sm text-sm leading-6 text-white/65">
-      Burgers, fried chicken, pizzas, desserts et boissons.
-    </p>
+                <p className="mt-3 max-w-sm text-sm leading-6 text-white/65">
+                  Burgers, fried chicken, pizzas,
+                  desserts et boissons.
+                </p>
 
-    <div className="mt-6 flex items-center justify-between border-t border-white/15 pt-5">
-      <span className="text-[9px] uppercase tracking-[0.2em] text-white/45">
-        Rouge · Or
-      </span>
+                <div className="mt-6 flex items-center justify-between border-t border-white/15 pt-5">
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-white/45">
+                    Rouge · Or
+                  </span>
 
-      <span
-        className={`text-sm transition-all duration-300 ${
-          !isRestaurant
-            ? "translate-x-1 text-[#d95a55]"
-            : "text-white/45 group-hover:translate-x-1 group-hover:text-[#d95a55]"
-        }`}
-      >
-        →
-      </span>
-    </div>
-  </div>
-</button>
+                  <span
+                    className={`text-sm transition-all duration-300 ${
+                      !isRestaurant
+                        ? "translate-x-1 text-[#d95a55]"
+                        : "text-white/45 group-hover:translate-x-1 group-hover:text-[#d95a55]"
+                    }`}
+                  >
+                    →
+                  </span>
+                </div>
+              </div>
+            </button>
 
           </div>
         </Reveal>
@@ -380,10 +419,8 @@ export default function MenuSwitcher() {
             }}
             className="mt-16"
           >
-
             {/* Menu identity */}
             <div className="border-b border-white/10 pb-8">
-
               <p
                 className="text-[10px] font-semibold uppercase tracking-[0.28em]"
                 style={{
@@ -400,7 +437,6 @@ export default function MenuSwitcher() {
                   ? "Cuisine, bar & cave"
                   : "Fast food & gourmandises"}
               </h3>
-
             </div>
 
             {/* Group navigation */}
@@ -416,7 +452,6 @@ export default function MenuSwitcher() {
 
             {/* Active group intro */}
             <div className="py-10 md:py-12">
-
               <p
                 className="text-[9px] font-semibold uppercase tracking-[0.28em]"
                 style={{
@@ -431,25 +466,27 @@ export default function MenuSwitcher() {
                   {activeGroup.description}
                 </p>
               )}
-
             </div>
 
             {/* Category quick navigation */}
             <div
               ref={categoryNavRef}
-              className="sticky top-36 z-20 flex gap-2 overflow-x-auto border-y border-white/10 bg-[#11100e]/95 py-4 backdrop-blur-md scrollbar-none [&::-webkit-scrollbar]:hidden"
+              className="sticky top-14 z-20 flex gap-2 overflow-x-auto border-y border-white/10 bg-[#11100e] py-4 scrollbar-none [&::-webkit-scrollbar]:hidden"
             >
-
               {activeGroup.categories.map(
                 (category) => {
                   const active =
-                    activeCategory ===
-                    category.id;
+                    activeCategory === category.id;
 
                   return (
                     <a
                       key={category.id}
                       href={`#${category.id}`}
+                      aria-current={
+                        active
+                          ? "location"
+                          : undefined
+                      }
                       data-category-id={
                         category.id
                       }
@@ -482,7 +519,6 @@ export default function MenuSwitcher() {
                   );
                 }
               )}
-
             </div>
 
             {/* Categories */}
@@ -516,7 +552,6 @@ export default function MenuSwitcher() {
                 )}
               </motion.div>
             </AnimatePresence>
-
           </motion.div>
         </AnimatePresence>
 

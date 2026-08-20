@@ -9,12 +9,12 @@ import {
 } from "react-icons/fa";
 
 const navigation = [
-  { label: "La Marquise", href: "#about" },
+  { label: "La Marquise", href: "/#about" },
   { label: "La Carte", href: "/menu" },
-  { label: "Expérience", href: "#experience" },
-  { label: "Événements", href: "#events" },
-  { label: "Galerie", href: "#gallery" },
-  { label: "Contact", href: "#contact" },
+  { label: "Expérience", href: "/#experience" },
+  { label: "Événements", href: "/#events" },
+  { label: "Galerie", href: "/#gallery" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export default function Footer() {
@@ -50,7 +50,7 @@ export default function Footer() {
               </p>
 
               <a
-                href="#reservation"
+                href="/#reservation"
                 className="group mt-8 inline-flex min-h-14 items-center justify-center gap-3 bg-[#b99a5b] px-8 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#11100e] transition-colors duration-300 hover:bg-[#d8c49c]"
               >
                 Réserver une table
@@ -158,7 +158,9 @@ export default function Footer() {
             <div className="flex flex-wrap items-center gap-3">
 
               <a
-                href="https://www.facebook.com/share/19GT6w88z8/?mibextid=wwXIf"
+                href="https://www.facebook.com/share/19GT6w88z8/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noreferrer"
                 aria-label="Facebook"
                 className="group flex min-h-12 items-center gap-3 border border-white/15 px-4 text-[#d8d2c8] transition duration-300 hover:border-[#b99a5b] hover:bg-[#b99a5b] hover:text-[#11100e]"
               >
@@ -171,6 +173,8 @@ export default function Footer() {
 
               <a
                 href="https://www.instagram.com/lamarquisedouala?igsh=am9mZmh0c28xOGsw"
+                target="_blank"
+                rel="noreferrer"
                 aria-label="Instagram"
                 className="group flex min-h-12 items-center gap-3 border border-white/15 px-4 text-[#d8d2c8] transition duration-300 hover:border-[#b99a5b] hover:bg-[#b99a5b] hover:text-[#11100e]"
               >
@@ -183,6 +187,8 @@ export default function Footer() {
 
               <a
                 href="https://wa.me/237670858585?text=Bonjour%20La%20Marquise%2C%20je%20souhaite%20faire%20une%20réservation."
+                target="_blank"
+                rel="noreferrer"
                 aria-label="WhatsApp"
                 className="group flex min-h-12 items-center gap-3 border border-white/15 px-4 text-[#d8d2c8] transition duration-300 hover:border-[#b99a5b] hover:bg-[#b99a5b] hover:text-[#11100e]"
               >

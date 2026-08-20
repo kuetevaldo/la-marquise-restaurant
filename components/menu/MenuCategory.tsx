@@ -17,7 +17,7 @@ export default function MenuCategory({
   return (
     <section
       id={category.id}
-      className="scroll-mt-52 border-t border-white/10 ..."
+      className="scroll-mt-52 border-t border-white/10"
     >
       <Reveal>
 
@@ -54,17 +54,12 @@ export default function MenuCategory({
       {category.items.length > 0 ? (
         <div className="grid gap-x-12 lg:grid-cols-2">
 
-          {category.items.map((item, index) => (
-            <Reveal
+          {category.items.map((item) => (
+            <MenuItem
               key={`${category.id}-${item.name}`}
-              delay={(index % 6) * 0.035}
-              y={14}
-            >
-              <MenuItem
-                item={item}
-                accent={accent}
-              />
-            </Reveal>
+              item={item}
+              accent={accent}
+            />
           ))}
 
         </div>

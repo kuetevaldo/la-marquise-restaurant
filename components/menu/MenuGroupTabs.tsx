@@ -22,7 +22,7 @@ export default function MenuGroupTabs({
   accent,
 }: MenuGroupTabsProps) {
   return (
-    <div className="sticky top-20 z-30 flex w-full overflow-x-auto border-b border-white/10 bg-[#11100e]/95 backdrop-blur-md scrollbar-none [&::-webkit-scrollbar]:hidden">
+    <div className="sticky top-0 z-30 flex w-full overflow-x-auto border-b border-white/10 bg-[#11100e] scrollbar-none [&::-webkit-scrollbar]:hidden">
       {groups.map((group) => {
         const active = group.id === activeGroup;
 
@@ -30,6 +30,7 @@ export default function MenuGroupTabs({
           <button
             key={group.id}
             type="button"
+            aria-pressed={active}
             onClick={() => onChange(group.id)}
             className={`relative shrink-0 px-5 py-5 text-[9px] font-semibold uppercase tracking-[0.2em] transition-colors duration-300 sm:px-7 sm:text-[10px] ${
               active

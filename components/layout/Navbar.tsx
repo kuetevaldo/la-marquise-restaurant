@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   FaFacebookF,
@@ -47,6 +47,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const drawerRef = useRef<HTMLElement>(null);
 
   const closeMenu = () => {
     setMenuOpen(false);
@@ -60,17 +61,60 @@ export default function Navbar() {
 
     document.body.style.overflow = "hidden";
 
+    const previouslyFocused =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+
+    const focusFrame = window.requestAnimationFrame(() => {
+      drawerRef.current
+        ?.querySelector<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+        ?.focus();
+    });
+
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setMenuOpen(false);
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusableElements =
+        drawerRef.current?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+
+      if (!focusableElements?.length) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement =
+        focusableElements[focusableElements.length - 1];
+
+      if (
+        event.shiftKey &&
+        document.activeElement === firstElement
+      ) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (
+        !event.shiftKey &&
+        document.activeElement === lastElement
+      ) {
+        event.preventDefault();
+        firstElement.focus();
       }
     };
 
     window.addEventListener("keydown", handleEscape);
 
     return () => {
+      window.cancelAnimationFrame(focusFrame);
       document.body.style.overflow = "";
       window.removeEventListener("keydown", handleEscape);
+      previouslyFocused?.focus();
     };
   }, [menuOpen]);
 
@@ -124,6 +168,7 @@ export default function Navbar() {
             type="button"
             aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
             onClick={() => setMenuOpen((current) => !current)}
             className="relative z-70 flex h-12 w-12 items-center justify-center border border-white/20 bg-black/15 backdrop-blur-md transition-colors duration-300 hover:border-[#b99a5b] lg:hidden"
           >
@@ -178,6 +223,11 @@ export default function Navbar() {
 
             {/* Drawer */}
             <motion.aside
+              ref={drawerRef}
+              id="mobile-navigation"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation mobile"
               initial={{
                 x: "100%",
               }}
@@ -270,7 +320,9 @@ export default function Navbar() {
                   <div className="flex items-center gap-2">
 
                     <a
-                      href="https://www.facebook.com/share/19GT6w88z8/?mibextid=wwXIf"
+                      href="https://www.facebook.com/share/19GT6w88z8/?mibextid=wwXIfr"
+                      target="_blank"
+                      rel="noreferrer"
                       aria-label="Facebook"
                       className="flex h-10 w-10 items-center justify-center border border-white/10 text-sm text-white/60 transition-colors duration-300 hover:border-[#b99a5b] hover:text-[#d8c49c]"
                     >
@@ -279,6 +331,8 @@ export default function Navbar() {
 
                     <a
                       href="https://www.instagram.com/lamarquisedouala?igsh=am9mZmh0c28xOGsw"
+                      target="_blank"
+                      rel="noreferrer"
                       aria-label="Instagram"
                       className="flex h-10 w-10 items-center justify-center border border-white/10 text-base text-white/60 transition-colors duration-300 hover:border-[#b99a5b] hover:text-[#d8c49c]"
                     >
