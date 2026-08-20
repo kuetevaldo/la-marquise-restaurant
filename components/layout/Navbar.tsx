@@ -254,7 +254,7 @@ export default function Navbar() {
               <div className="border-t border-white/10 px-7 pb-7 pt-6">
 
                 <Link
-                  href="#reservation"
+                  href="/#reservation"
                   onClick={closeMenu}
                   className="group flex min-h-14 w-full items-center justify-center gap-3 bg-[#b99a5b] px-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#11100e] transition-colors duration-300 hover:bg-[#d8c49c]"
                 >
