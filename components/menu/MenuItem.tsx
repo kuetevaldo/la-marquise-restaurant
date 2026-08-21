@@ -11,19 +11,19 @@ function formatPrice(price: number) {
 
 export default function MenuItem({
   item,
-  accent = "#b99a5b",
+  accent = "var(--brand)",
 }: MenuItemProps) {
   return (
-    <article className="border-b border-white/10 py-6">
+    <article className="border-b border-[var(--border)] py-6">
       <div className="flex items-start justify-between gap-6">
 
         <div className="min-w-0 flex-1">
-          <h4 className="font-display text-2xl leading-tight text-[#f5f1e8] sm:text-[28px]">
+          <h4 className="font-display text-2xl leading-tight text-[var(--foreground)] sm:text-[28px]">
             {item.name}
           </h4>
 
           {item.description && (
-            <p className="mt-2 max-w-xl text-xs leading-6 text-[#716c64] sm:text-sm">
+            <p className="mt-2 max-w-xl text-xs leading-6 text-[var(--muted-soft)] sm:text-sm">
               {item.description}
             </p>
           )}
@@ -50,7 +50,7 @@ export default function MenuItem({
               key={`${item.name}-${price.label}`}
               className="flex items-center gap-3"
             >
-              <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-[#68635c]">
+              <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-[var(--muted-subtle)]">
                 {price.label}
               </span>
 

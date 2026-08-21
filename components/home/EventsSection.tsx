@@ -45,11 +45,11 @@ export default function EventsSection() {
   return (
     <section
       id="events"
-      className="relative overflow-hidden bg-[#0b0b0a] py-24 sm:py-28 md:py-32 lg:py-36"
+      className="relative overflow-hidden bg-[var(--background)] py-24 sm:py-28 md:py-32 lg:py-36"
     >
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 md:px-10 lg:px-12 xl:px-16">
 
-        <div className="relative min-h-130 w-full overflow-hidden bg-[#151411] md:min-h-155">
+        <div className="relative min-h-130 w-full overflow-hidden bg-[var(--surface-elevated)] md:min-h-155">
 
           {/* Background video */}
           <video
@@ -76,9 +76,9 @@ export default function EventsSection() {
               {/* Label */}
               <Reveal y={18}>
                 <div className="mb-6 flex items-center gap-4">
-                  <span className="h-px w-10 bg-[#b99a5b]" />
+                  <span className="h-px w-10 bg-[var(--brand)]" />
 
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[#d8c49c] sm:text-[11px]">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[var(--brand-light)] sm:text-[11px]">
                     Événements
                   </p>
                 </div>
@@ -86,10 +86,10 @@ export default function EventsSection() {
 
               {/* Heading */}
               <Reveal delay={0.08} y={24}>
-                <h2 className="font-display text-5xl font-medium leading-[0.96] tracking-tight text-[#f5f1e8] sm:text-6xl md:text-7xl">
+                <h2 className="font-display text-5xl font-medium leading-[0.96] tracking-tight text-[var(--foreground)] sm:text-6xl md:text-7xl">
                   Vos moments
 
-                  <span className="mt-2 block italic text-[#d8c49c]">
+                  <span className="mt-2 block italic text-[var(--brand-light)]">
                     méritent un cadre unique.
                   </span>
                 </h2>
@@ -97,7 +97,7 @@ export default function EventsSection() {
 
               {/* Description */}
               <Reveal delay={0.16} y={20}>
-                <p className="mt-7 max-w-xl text-sm leading-7 text-white/75 md:text-base md:leading-8">
+                <p className="mt-7 max-w-xl text-sm leading-7 text-[var(--foreground-soft)] md:text-base md:leading-8">
                   Anniversaires, dîners privés, retrouvailles ou célébrations
                   spéciales, La Marquise vous accueille dans un cadre élégant
                   pour créer des souvenirs autour de la table.
@@ -108,7 +108,7 @@ export default function EventsSection() {
               <Reveal delay={0.24} y={18}>
                 <a
                   href="#reservation"
-                  className="group mt-9 inline-flex min-h-14 items-center justify-center gap-3 bg-[#b99a5b] px-7 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#11100e] transition-colors duration-300 hover:bg-[#d8c49c] sm:px-8 sm:text-[11px]"
+                  className="group mt-9 inline-flex min-h-14 items-center justify-center gap-3 bg-[var(--brand)] px-7 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--surface)] transition-colors duration-300 hover:bg-[var(--brand-light)] sm:px-8 sm:text-[11px]"
                 >
                   Organiser un événement
 
@@ -123,7 +123,7 @@ export default function EventsSection() {
           </div>
 
           {/* Bottom caption */}
-          <div className="absolute bottom-7 right-7 z-10 hidden text-[9px] uppercase tracking-[0.25em] text-white/50 md:block">
+          <div className="absolute bottom-7 right-7 z-10 hidden text-[9px] uppercase tracking-[0.25em] text-[var(--muted)] md:block">
             La Marquise · Bonapriso
           </div>
 

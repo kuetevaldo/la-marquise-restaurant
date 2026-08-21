@@ -21,7 +21,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/10 bg-[#080807]">
+    <footer className="border-t border-[var(--border)] bg-[var(--background-deep)]">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 md:px-10 lg:px-12 xl:px-16">
 
         {/* Main footer */}
@@ -44,28 +44,28 @@ export default function Footer() {
                 />
               </Link>
 
-              <p className="mt-6 max-w-md text-sm leading-7 text-[#8f8980] md:text-base md:leading-8">
+              <p className="mt-6 max-w-md text-sm leading-7 text-[var(--muted-soft)] md:text-base md:leading-8">
                 Cuisine généreuse, cadre élégant et moments à partager au cœur
                 de Bonapriso, Douala.
               </p>
 
-              <a
+              <Link
                 href="/#reservation"
-                className="group mt-8 inline-flex min-h-14 items-center justify-center gap-3 bg-[#b99a5b] px-8 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#11100e] transition-colors duration-300 hover:bg-[#d8c49c]"
+                className="group mt-8 inline-flex min-h-14 items-center justify-center gap-3 bg-[var(--brand)] px-8 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--surface)] transition-colors duration-300 hover:bg-[var(--brand-light)]"
               >
                 Réserver une table
 
                 <span className="transition-transform duration-300 group-hover:translate-x-1">
                   →
                 </span>
-              </a>
+              </Link>
             </div>
           </Reveal>
 
           {/* Navigation */}
           <Reveal delay={0.08} y={20}>
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#b99a5b]">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[var(--brand)]">
                 Navigation
               </p>
 
@@ -74,7 +74,7 @@ export default function Footer() {
                   <Link
                     key={item.label}
                     href={item.href}
-                    className="border-b border-white/10 py-3.5 font-display text-xl text-[#d8d2c8] transition-colors duration-300 hover:text-[#d8c49c]"
+                    className="border-b border-[var(--border)] py-3.5 font-display text-xl text-[var(--foreground-soft)] transition-colors duration-300 hover:text-[var(--brand-light)]"
                   >
                     {item.label}
                   </Link>
@@ -86,18 +86,18 @@ export default function Footer() {
           {/* Contact */}
           <Reveal delay={0.16} y={20}>
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#b99a5b]">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[var(--brand)]">
                 Nous contacter
               </p>
 
               <div className="mt-7 space-y-7">
 
                 <div>
-                  <p className="text-[9px] uppercase tracking-[0.24em] text-[#68635c]">
+                  <p className="text-[9px] uppercase tracking-[0.24em] text-[var(--muted-subtle)]">
                     Adresse
                   </p>
 
-                  <p className="mt-2 text-sm leading-6 text-[#d8d2c8]">
+                  <p className="mt-2 text-sm leading-6 text-[var(--foreground-soft)]">
                     Bonapriso · Rue Tokoto
                     <br />
                     Douala, Cameroun
@@ -105,37 +105,37 @@ export default function Footer() {
                 </div>
 
                 <div>
-                  <p className="text-[9px] uppercase tracking-[0.24em] text-[#68635c]">
+                  <p className="text-[9px] uppercase tracking-[0.24em] text-[var(--muted-subtle)]">
                     Téléphone
                   </p>
 
                   <a
                     href="tel:+237698434343"
-                    className="mt-2 inline-block text-sm text-[#d8d2c8] transition-colors duration-300 hover:text-[#d8c49c]"
+                    className="mt-2 inline-block text-sm text-[var(--foreground-soft)] transition-colors duration-300 hover:text-[var(--brand-light)]"
                   >
                     +237 6 98 43 43 43
                   </a>
                 </div>
 
                 <div>
-                  <p className="text-[9px] uppercase tracking-[0.24em] text-[#68635c]">
+                  <p className="text-[9px] uppercase tracking-[0.24em] text-[var(--muted-subtle)]">
                     Email
                   </p>
 
                   <a
                     href="mailto:lamarquisedouala@gmail.com"
-                    className="mt-2 inline-block break-all text-sm text-[#d8d2c8] transition-colors duration-300 hover:text-[#d8c49c]"
+                    className="mt-2 inline-block break-all text-sm text-[var(--foreground-soft)] transition-colors duration-300 hover:text-[var(--brand-light)]"
                   >
                     lamarquisedouala@gmail.com
                   </a>
                 </div>
 
                 <div>
-                  <p className="text-[9px] uppercase tracking-[0.24em] text-[#68635c]">
+                  <p className="text-[9px] uppercase tracking-[0.24em] text-[var(--muted-subtle)]">
                     Horaires
                   </p>
 
-                  <p className="mt-2 text-sm text-[#d8d2c8]">
+                  <p className="mt-2 text-sm text-[var(--foreground-soft)]">
                     Tous les jours · 11:00 — 23:30
                   </p>
                 </div>
@@ -148,9 +148,9 @@ export default function Footer() {
 
         {/* Bottom footer */}
         <Reveal delay={0.1} y={14}>
-          <div className="flex flex-col gap-6 border-t border-white/10 py-8 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-6 border-t border-[var(--border)] py-8 md:flex-row md:items-center md:justify-between">
 
-            <p className="text-[10px] uppercase tracking-[0.16em] text-[#615d56]">
+            <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--muted-subtle)]">
               © {year} La Marquise Restaurant
             </p>
 
@@ -162,7 +162,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Facebook"
-                className="group flex min-h-12 items-center gap-3 border border-white/15 px-4 text-[#d8d2c8] transition duration-300 hover:border-[#b99a5b] hover:bg-[#b99a5b] hover:text-[#11100e]"
+                className="group flex min-h-12 items-center gap-3 border border-[var(--border)] px-4 text-[var(--foreground-soft)] transition-colors duration-300 hover:border-[var(--brand)] hover:bg-[var(--brand)] hover:text-[var(--surface)]"
               >
                 <FaFacebookF className="text-lg" />
 
@@ -176,7 +176,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Instagram"
-                className="group flex min-h-12 items-center gap-3 border border-white/15 px-4 text-[#d8d2c8] transition duration-300 hover:border-[#b99a5b] hover:bg-[#b99a5b] hover:text-[#11100e]"
+                className="group flex min-h-12 items-center gap-3 border border-[var(--border)] px-4 text-[var(--foreground-soft)] transition-colors duration-300 hover:border-[var(--brand)] hover:bg-[var(--brand)] hover:text-[var(--surface)]"
               >
                 <FaInstagram className="text-xl" />
 
@@ -190,7 +190,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="WhatsApp"
-                className="group flex min-h-12 items-center gap-3 border border-white/15 px-4 text-[#d8d2c8] transition duration-300 hover:border-[#b99a5b] hover:bg-[#b99a5b] hover:text-[#11100e]"
+                className="group flex min-h-12 items-center gap-3 border border-[var(--border)] px-4 text-[var(--foreground-soft)] transition-colors duration-300 hover:border-[var(--brand)] hover:bg-[var(--brand)] hover:text-[var(--surface)]"
               >
                 <FaWhatsapp className="text-xl" />
 

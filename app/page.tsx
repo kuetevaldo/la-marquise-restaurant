@@ -24,7 +24,11 @@ export default function Home() {
     <>
       <Navbar />
 
-      <main className="w-full overflow-x-hidden">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="site-main-shell w-full overflow-x-clip"
+      >
         <Hero />
         <Introduction />
         <SignatureDishes />

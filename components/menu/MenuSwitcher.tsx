@@ -7,7 +7,6 @@ import {
   useState,
 } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
 
 import Reveal from "@/components/ui/Reveal";
 import MenuCategory from "@/components/menu/MenuCategory";
@@ -19,8 +18,6 @@ import {
 } from "@/components/menu/MenuData";
 
 type MenuType = "restaurant" | "fastfood";
-
-const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function MenuSwitcher() {
   const [activeMenu, setActiveMenu] =
@@ -37,9 +34,6 @@ export default function MenuSwitcher() {
 
   const categoryNavRef =
     useRef<HTMLDivElement>(null);
-
-  const menuSectionRef =
-    useRef<HTMLElement>(null);
 
   const isRestaurant =
     activeMenu === "restaurant";
@@ -61,12 +55,20 @@ export default function MenuSwitcher() {
   }, [groups, activeGroupId]);
 
   const accent = isRestaurant
-    ? "#b99a5b"
-    : "#9f2727";
+    ? "var(--brand)"
+    : "var(--fastfood-light)";
 
   const accentLight = isRestaurant
-    ? "#d8c49c"
-    : "#d95a55";
+    ? "var(--brand-light)"
+    : "var(--fastfood-light)";
+
+  const accentStrong = isRestaurant
+    ? "var(--brand)"
+    : "var(--fastfood)";
+
+  const activeAccentText = isRestaurant
+    ? "var(--surface)"
+    : "var(--foreground)";
 
   const changeGroup = (groupId: string) => {
     if (isRestaurant) {
@@ -83,102 +85,115 @@ export default function MenuSwitcher() {
   useEffect(() => {
     if (!activeGroup) return;
 
-    const categoryIds =
-      activeGroup.categories.map(
-        (category) => category.id
+    const sections = activeGroup.categories
+      .map((category) =>
+        document.getElementById(category.id)
+      )
+      .filter(
+        (section): section is HTMLElement =>
+          section !== null
       );
 
-    let sectionObserver:
-      | IntersectionObserver
-      | null = null;
+    if (sections.length === 0) return;
 
-    let contentObserver:
-      | MutationObserver
-      | null = null;
+    const navbar =
+      document.querySelector<HTMLElement>(
+        "[data-site-navbar]"
+      );
 
-    const connectSectionObserver = () => {
-      if (sectionObserver) return true;
+    const groupTabs =
+      document.querySelector<HTMLElement>(
+        "[data-menu-group-tabs]"
+      );
 
-      const sections = categoryIds
-        .map((id) =>
-          document.getElementById(id)
+    const categoryTabs = categoryNavRef.current;
+
+    let sectionObserver: IntersectionObserver | null =
+      null;
+
+    const observeSections = () => {
+      sectionObserver?.disconnect();
+
+      const stickyOffset = Math.ceil(
+        (navbar?.getBoundingClientRect().height ?? 0) +
+          (groupTabs?.getBoundingClientRect().height ?? 0) +
+          (categoryTabs?.getBoundingClientRect().height ?? 0)
+      );
+
+      const viewportHeight =
+        window.visualViewport?.height ??
+        window.innerHeight;
+
+      const trackingBandHeight = Math.min(
+        32,
+        Math.max(1, viewportHeight - stickyOffset)
+      );
+
+      const bottomMargin = Math.max(
+        0,
+        Math.ceil(
+          viewportHeight -
+            stickyOffset -
+            trackingBandHeight
         )
-        .filter(
-          (section): section is HTMLElement =>
-            section !== null
-        );
-
-      if (sections.length !== categoryIds.length) {
-        return false;
-      }
-
-      setActiveCategory(
-        activeGroup.categories[0]?.id ?? ""
       );
 
-      sectionObserver =
-        new IntersectionObserver(
+      sectionObserver = new IntersectionObserver(
         (entries) => {
           const visibleEntries = entries
-            .filter(
-              (entry) =>
-                entry.isIntersecting
-            )
+            .filter((entry) => entry.isIntersecting)
             .sort(
               (a, b) =>
-                b.intersectionRatio -
-                a.intersectionRatio
+                Math.abs(
+                  a.boundingClientRect.top -
+                    stickyOffset
+                ) -
+                Math.abs(
+                  b.boundingClientRect.top -
+                    stickyOffset
+                )
             );
 
-          if (visibleEntries.length > 0) {
-            const nextCategory =
-              visibleEntries[0].target.id;
+          const nextCategory =
+            visibleEntries[0]?.target.id;
 
-            setActiveCategory((current) =>
-              current === nextCategory
-                ? current
-                : nextCategory
-            );
-          }
+          if (!nextCategory) return;
+
+          setActiveCategory((current) =>
+            current === nextCategory
+              ? current
+              : nextCategory
+          );
         },
         {
           root: null,
-          rootMargin:
-            "-150px 0px -60% 0px",
-          threshold: [0.05, 0.15, 0.3],
+          rootMargin: `-${stickyOffset}px 0px -${bottomMargin}px 0px`,
+          threshold: 0,
         }
       );
 
       sections.forEach((section) => {
         sectionObserver?.observe(section);
       });
-
-      return true;
     };
 
-    if (!connectSectionObserver()) {
-      const menuSection =
-        menuSectionRef.current;
+    const sizeObserver = new ResizeObserver(
+      observeSections
+    );
 
-      if (menuSection) {
-        contentObserver = new MutationObserver(
-          () => {
-            if (connectSectionObserver()) {
-              contentObserver?.disconnect();
-            }
-          }
-        );
-
-        contentObserver.observe(menuSection, {
-          childList: true,
-          subtree: true,
-        });
+    [navbar, groupTabs, categoryTabs].forEach(
+      (element) => {
+        if (element) {
+          sizeObserver.observe(element);
+        }
       }
-    }
+    );
+
+    observeSections();
 
     return () => {
+      sizeObserver.disconnect();
       sectionObserver?.disconnect();
-      contentObserver?.disconnect();
     };
   }, [activeGroup]);
 
@@ -207,17 +222,18 @@ export default function MenuSwitcher() {
       container.clientWidth / 2 +
       activeButton.clientWidth / 2;
 
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
     container.scrollTo({
       left: targetLeft,
-      behavior: "smooth",
+      behavior: reduceMotion ? "auto" : "smooth",
     });
   }, [activeCategory]);
 
   return (
-    <section
-      ref={menuSectionRef}
-      className="bg-[#11100e] py-20 sm:py-24 md:py-28 lg:py-32"
-    >
+    <section className="bg-[var(--surface)] py-20 sm:py-24 md:py-28 lg:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 md:px-10 lg:px-12 xl:px-16">
 
         {/* Brand heading */}
@@ -232,7 +248,7 @@ export default function MenuSwitcher() {
               Choisissez votre univers
             </p>
 
-            <h2 className="font-display mt-5 text-4xl font-medium text-[#f5f1e8] sm:text-5xl md:text-6xl">
+            <h2 className="font-display mt-5 text-4xl font-medium text-[var(--foreground)] sm:text-5xl md:text-6xl">
               Deux identités,
               <span
                 className="italic"
@@ -245,7 +261,7 @@ export default function MenuSwitcher() {
               </span>
             </h2>
 
-            <p className="mx-auto mt-6 max-w-xl text-sm leading-7 text-[#8f8980] md:text-base md:leading-8">
+            <p className="mx-auto mt-6 max-w-xl text-sm leading-7 text-[var(--muted-soft)] md:text-base md:leading-8">
               Découvrez les deux expériences La Marquise :
               le Restaurant et son univers raffiné, ou le
               Fast Food pour une carte plus généreuse et
@@ -266,10 +282,10 @@ export default function MenuSwitcher() {
                 setActiveMenu("restaurant");
                 setActiveCategory("");
               }}
-              className={`group relative min-h-72 overflow-hidden border text-left transition-all duration-500 sm:min-h-80 ${
+              className={`group relative min-h-72 overflow-hidden border text-left transition-colors duration-300 sm:min-h-80 ${
                 isRestaurant
-                  ? "border-[#b99a5b]"
-                  : "border-white/10 hover:border-white/25"
+                  ? "border-[var(--brand)]"
+                  : "border-[var(--border)] hover:border-[var(--border-strong)]"
               }`}
             >
               <Image
@@ -283,41 +299,39 @@ export default function MenuSwitcher() {
               <div className="absolute inset-0 bg-black/55" />
               <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/35 to-black/10" />
 
-              {isRestaurant && (
-                <motion.span
-                  layoutId="brand-indicator"
-                  transition={{
-                    duration: 0.4,
-                    ease,
-                  }}
-                  className="absolute inset-x-0 top-0 z-10 h-0.5 bg-[#b99a5b]"
-                />
-              )}
+              <span
+                aria-hidden="true"
+                className={`absolute inset-x-0 top-0 z-10 h-0.5 origin-left bg-[var(--brand)] transition-[opacity,transform] duration-300 ${
+                  isRestaurant
+                    ? "scale-x-100 opacity-100"
+                    : "scale-x-0 opacity-0"
+                }`}
+              />
 
               <div className="relative z-10 flex min-h-72 flex-col justify-end p-6 sm:min-h-80 sm:p-8">
-                <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[#b99a5b]">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[var(--brand)]">
                   La Marquise
                 </p>
 
-                <h3 className="font-display mt-3 text-4xl text-[#f5f1e8] sm:text-5xl">
+                <h3 className="font-display mt-3 text-4xl text-[var(--foreground)] sm:text-5xl">
                   Restaurant
                 </h3>
 
-                <p className="mt-3 max-w-sm text-sm leading-6 text-white/65">
+                <p className="mt-3 max-w-sm text-sm leading-6 text-[var(--foreground-soft)]">
                   Cuisine internationale, orientale, bar,
                   cocktails et sélection de vins.
                 </p>
 
-                <div className="mt-6 flex items-center justify-between border-t border-white/15 pt-5">
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-white/45">
+                <div className="mt-6 flex items-center justify-between border-t border-[var(--border)] pt-5">
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-[var(--muted)]">
                     Noir · Or
                   </span>
 
                   <span
                     className={`text-sm transition-all duration-300 ${
                       isRestaurant
-                        ? "translate-x-1 text-[#d8c49c]"
-                        : "text-white/45 group-hover:translate-x-1 group-hover:text-[#d8c49c]"
+                        ? "translate-x-1 text-[var(--brand-light)]"
+                        : "text-[var(--muted)] group-hover:translate-x-1 group-hover:text-[var(--brand-light)]"
                     }`}
                   >
                     →
@@ -334,10 +348,10 @@ export default function MenuSwitcher() {
                 setActiveMenu("fastfood");
                 setActiveCategory("");
               }}
-              className={`group relative min-h-72 overflow-hidden border text-left transition-all duration-500 sm:min-h-80 ${
+              className={`group relative min-h-72 overflow-hidden border text-left transition-colors duration-300 sm:min-h-80 ${
                 !isRestaurant
-                  ? "border-[#9f2727]"
-                  : "border-white/10 hover:border-white/25"
+                  ? "border-[var(--fastfood)]"
+                  : "border-[var(--border)] hover:border-[var(--border-strong)]"
               }`}
             >
               <Image
@@ -349,43 +363,41 @@ export default function MenuSwitcher() {
               />
 
               <div className="absolute inset-0 bg-black/40" />
-              <div className="absolute inset-0 bg-linear-to-t from-[#2a0505]/95 via-black/30 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-[var(--fastfood-deep)]/95 via-black/30 to-transparent" />
 
-              {!isRestaurant && (
-                <motion.span
-                  layoutId="brand-indicator"
-                  transition={{
-                    duration: 0.4,
-                    ease,
-                  }}
-                  className="absolute inset-x-0 top-0 z-10 h-0.5 bg-[#9f2727]"
-                />
-              )}
+              <span
+                aria-hidden="true"
+                className={`absolute inset-x-0 top-0 z-10 h-0.5 origin-left bg-[var(--fastfood)] transition-[opacity,transform] duration-300 ${
+                  !isRestaurant
+                    ? "scale-x-100 opacity-100"
+                    : "scale-x-0 opacity-0"
+                }`}
+              />
 
               <div className="relative z-10 flex min-h-72 flex-col justify-end p-6 sm:min-h-80 sm:p-8">
-                <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[#d95a55]">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[var(--fastfood-light)]">
                   La Marquise
                 </p>
 
-                <h3 className="font-display mt-3 text-4xl text-[#f5f1e8] sm:text-5xl">
+                <h3 className="font-display mt-3 text-4xl text-[var(--foreground)] sm:text-5xl">
                   Fast Food
                 </h3>
 
-                <p className="mt-3 max-w-sm text-sm leading-6 text-white/65">
+                <p className="mt-3 max-w-sm text-sm leading-6 text-[var(--foreground-soft)]">
                   Burgers, fried chicken, pizzas,
                   desserts et boissons.
                 </p>
 
-                <div className="mt-6 flex items-center justify-between border-t border-white/15 pt-5">
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-white/45">
+                <div className="mt-6 flex items-center justify-between border-t border-[var(--border)] pt-5">
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-[var(--muted)]">
                     Rouge · Or
                   </span>
 
                   <span
                     className={`text-sm transition-all duration-300 ${
                       !isRestaurant
-                        ? "translate-x-1 text-[#d95a55]"
-                        : "text-white/45 group-hover:translate-x-1 group-hover:text-[#d95a55]"
+                        ? "translate-x-1 text-[var(--fastfood-light)]"
+                        : "text-[var(--muted)] group-hover:translate-x-1 group-hover:text-[var(--fastfood-light)]"
                     }`}
                   >
                     →
@@ -398,29 +410,9 @@ export default function MenuSwitcher() {
         </Reveal>
 
         {/* Selected menu */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeMenu}
-            initial={{
-              opacity: 0,
-              y: 18,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            exit={{
-              opacity: 0,
-              y: -10,
-            }}
-            transition={{
-              duration: 0.45,
-              ease,
-            }}
-            className="mt-16"
-          >
+        <div className="mt-16">
             {/* Menu identity */}
-            <div className="border-b border-white/10 pb-8">
+            <div className="border-b border-[var(--border)] pb-8">
               <p
                 className="text-[10px] font-semibold uppercase tracking-[0.28em]"
                 style={{
@@ -432,7 +424,7 @@ export default function MenuSwitcher() {
                   : "La Marquise Fast Food"}
               </p>
 
-              <h3 className="font-display mt-3 max-w-3xl text-4xl leading-tight text-[#f5f1e8] sm:text-5xl">
+              <h3 className="font-display mt-3 max-w-3xl text-4xl leading-tight text-[var(--foreground)] sm:text-5xl">
                 {isRestaurant
                   ? "Cuisine, bar & cave"
                   : "Fast food & gourmandises"}
@@ -462,7 +454,7 @@ export default function MenuSwitcher() {
               </p>
 
               {activeGroup.description && (
-                <p className="mt-3 max-w-xl text-sm leading-7 text-[#716c64]">
+                <p className="mt-3 max-w-xl text-sm leading-7 text-[var(--muted-soft)]">
                   {activeGroup.description}
                 </p>
               )}
@@ -471,7 +463,8 @@ export default function MenuSwitcher() {
             {/* Category quick navigation */}
             <div
               ref={categoryNavRef}
-              className="sticky top-14 z-20 flex gap-2 overflow-x-auto border-y border-white/10 bg-[#11100e] py-4 scrollbar-none [&::-webkit-scrollbar]:hidden"
+              data-menu-category-tabs
+              className="menu-category-tabs sticky z-20 flex items-center gap-2 overflow-x-auto border-y border-[var(--border)] bg-[var(--surface)] scrollbar-none [&::-webkit-scrollbar]:hidden"
             >
               {activeGroup.categories.map(
                 (category) => {
@@ -495,22 +488,22 @@ export default function MenuSwitcher() {
                           category.id
                         );
                       }}
-                      className="shrink-0 border px-4 py-3 text-[9px] font-semibold uppercase tracking-[0.15em] transition-all duration-300"
+                      className="min-h-11 shrink-0 border px-4 py-3 text-[9px] font-semibold uppercase tracking-[0.15em] transition-all duration-300"
                       style={
                         active
                           ? {
                               borderColor:
-                                accent,
+                                accentStrong,
                               backgroundColor:
-                                accent,
+                                accentStrong,
                               color:
-                                "#11100e",
+                                activeAccentText,
                             }
                           : {
                               borderColor:
-                                "rgba(255,255,255,0.10)",
+                                "var(--border)",
                               color:
-                                "#8f8980",
+                                "var(--muted-soft)",
                             }
                       }
                     >
@@ -521,39 +514,19 @@ export default function MenuSwitcher() {
               )}
             </div>
 
-            {/* Categories */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`${activeMenu}-${activeGroup.id}`}
-                initial={{
-                  opacity: 0,
-                  y: 15,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                exit={{
-                  opacity: 0,
-                }}
-                transition={{
-                  duration: 0.4,
-                  ease,
-                }}
-              >
-                {activeGroup.categories.map(
-                  (category) => (
-                    <MenuCategory
-                      key={category.id}
-                      category={category}
-                      accent={accent}
-                    />
-                  )
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </motion.div>
-        </AnimatePresence>
+          {/* Categories */}
+          <div>
+            {activeGroup.categories.map(
+              (category) => (
+                <MenuCategory
+                  key={category.id}
+                  category={category}
+                  accent={accent}
+                />
+              )
+            )}
+          </div>
+        </div>
 
       </div>
     </section>

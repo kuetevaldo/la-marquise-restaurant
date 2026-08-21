@@ -18,7 +18,11 @@ export default function MenuPage() {
     <>
       <Navbar />
 
-      <main className="w-full overflow-x-hidden bg-[#0b0b0a]">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="site-main-shell w-full overflow-x-clip bg-[var(--background)]"
+      >
         <MenuHero />
         <MenuSwitcher />
         <MenuCTA />

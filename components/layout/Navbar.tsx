@@ -3,7 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+} from "framer-motion";
 import {
   FaFacebookF,
   FaInstagram,
@@ -47,19 +51,114 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const drawerRef = useRef<HTMLElement>(null);
+  const scrollSentinelRef = useRef<HTMLSpanElement>(null);
+  const restoreScrollOnCloseRef = useRef(true);
+  const shouldReduceMotion = useReducedMotion();
 
   const closeMenu = () => {
     setMenuOpen(false);
   };
 
+  const closeMenuForNavigation = () => {
+    restoreScrollOnCloseRef.current = false;
+    setMenuOpen(false);
+  };
+
   useEffect(() => {
-    if (!menuOpen) {
-      document.body.style.overflow = "";
-      return;
+    const sentinel = scrollSentinelRef.current;
+
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const nextScrolled = !entry.isIntersecting;
+
+        setIsScrolled((current) =>
+          current === nextScrolled
+            ? current
+            : nextScrolled
+        );
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(sentinel);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const desktopQuery = window.matchMedia(
+      "(min-width: 1024px)"
+    );
+
+    const closeAtDesktop = (
+      event: MediaQueryListEvent
+    ) => {
+      if (event.matches) {
+        setMenuOpen(false);
+      }
+    };
+
+    desktopQuery.addEventListener(
+      "change",
+      closeAtDesktop
+    );
+
+    return () => {
+      desktopQuery.removeEventListener(
+        "change",
+        closeAtDesktop
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    restoreScrollOnCloseRef.current = true;
+
+    const body = document.body;
+    const html = document.documentElement;
+    const scrollPosition = window.scrollY;
+    const scrollbarWidth =
+      window.innerWidth - html.clientWidth;
+
+    const previousBodyStyles = {
+      overflow: body.style.overflow,
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+      paddingRight: body.style.paddingRight,
+    };
+
+    const backgroundElements = Array.from(
+      document.querySelectorAll<HTMLElement>(
+        "main, footer"
+      )
+    ).map((element) => ({
+      element,
+      wasInert: element.inert,
+    }));
+
+    body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollPosition}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+
+    if (scrollbarWidth > 0) {
+      body.style.paddingRight = `${scrollbarWidth}px`;
     }
 
-    document.body.style.overflow = "hidden";
+    backgroundElements.forEach(({ element }) => {
+      element.inert = true;
+    });
 
     const previouslyFocused =
       document.activeElement instanceof HTMLElement
@@ -112,16 +211,56 @@ export default function Navbar() {
 
     return () => {
       window.cancelAnimationFrame(focusFrame);
-      document.body.style.overflow = "";
       window.removeEventListener("keydown", handleEscape);
-      previouslyFocused?.focus();
+
+      body.style.overflow = previousBodyStyles.overflow;
+      body.style.position = previousBodyStyles.position;
+      body.style.top = previousBodyStyles.top;
+      body.style.left = previousBodyStyles.left;
+      body.style.right = previousBodyStyles.right;
+      body.style.width = previousBodyStyles.width;
+      body.style.paddingRight =
+        previousBodyStyles.paddingRight;
+
+      backgroundElements.forEach(
+        ({ element, wasInert }) => {
+          element.inert = wasInert;
+        }
+      );
+
+      if (restoreScrollOnCloseRef.current) {
+        const previousScrollBehavior =
+          html.style.scrollBehavior;
+
+        html.style.scrollBehavior = "auto";
+        window.scrollTo({
+          top: scrollPosition,
+          left: 0,
+          behavior: "auto",
+        });
+        html.style.scrollBehavior =
+          previousScrollBehavior;
+      }
+
+      previouslyFocused?.focus({
+        preventScroll: true,
+      });
     };
   }, [menuOpen]);
 
   return (
     <>
-      <header className="absolute left-0 top-0 z-50 w-full">
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-6 sm:px-8 md:py-7 lg:px-12 xl:px-16">
+      <span
+        ref={scrollSentinelRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute left-0 top-0 h-px w-px"
+      />
+      <header
+        data-site-navbar
+        data-scrolled={isScrolled ? "true" : "false"}
+        className="site-navbar fixed inset-x-0 top-0 z-50 w-full border-b"
+      >
+        <div className="site-navbar-inner mx-auto flex h-full w-full max-w-7xl items-center justify-between">
 
           {/* Logo */}
           <Link
@@ -147,7 +286,7 @@ export default function Navbar() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="relative text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75 transition-colors duration-300 after:absolute after:-bottom-2 after:left-0 after:h-px after:w-0 after:bg-[#b99a5b] after:transition-all after:duration-300 hover:text-[#d8c49c] hover:after:w-full xl:text-[11px]"
+                  className="relative text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--foreground-soft)] transition-colors duration-300 after:absolute after:-bottom-2 after:left-0 after:h-px after:w-0 after:bg-[var(--brand)] after:transition-all after:duration-300 hover:text-[var(--brand-light)] hover:after:w-full xl:text-[11px]"
                 >
                   {item.label}
                 </Link>
@@ -156,7 +295,7 @@ export default function Navbar() {
 
             <Link
               href="/#reservation"
-              className="inline-flex min-h-12 items-center justify-center border border-[#b99a5b] bg-[#b99a5b] px-6 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#11100e] transition-colors duration-300 hover:bg-[#d8c49c]"
+              className="inline-flex min-h-12 items-center justify-center border border-[var(--brand)] bg-[var(--brand)] px-6 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--surface)] transition-colors duration-300 hover:border-[var(--brand-light)] hover:bg-[var(--brand-light)]"
             >
               Réserver
             </Link>
@@ -170,20 +309,20 @@ export default function Navbar() {
             aria-expanded={menuOpen}
             aria-controls="mobile-navigation"
             onClick={() => setMenuOpen((current) => !current)}
-            className="relative z-70 flex h-12 w-12 items-center justify-center border border-white/20 bg-black/15 backdrop-blur-md transition-colors duration-300 hover:border-[#b99a5b] lg:hidden"
+            className="relative z-70 flex h-12 w-12 items-center justify-center border border-[var(--border-strong)] bg-[var(--surface)] transition-colors duration-300 hover:border-[var(--brand)] lg:hidden"
           >
             <div className="relative h-4 w-5">
 
               <span
-                className={`absolute left-0 top-0 h-px w-5 bg-white transition-all duration-300 ${
+                className={`absolute left-0 top-0 h-px w-5 bg-[var(--foreground)] transition-all duration-300 ${
                   menuOpen
-                    ? "top-2 rotate-45 bg-[#d8c49c]"
+                    ? "top-2 rotate-45 bg-[var(--brand-light)]"
                     : ""
                 }`}
               />
 
               <span
-                className={`absolute left-0 top-2 h-px bg-white transition-all duration-300 ${
+                className={`absolute left-0 top-2 h-px bg-[var(--foreground)] transition-all duration-300 ${
                   menuOpen
                     ? "w-0 opacity-0"
                     : "w-3.5 opacity-100"
@@ -191,9 +330,9 @@ export default function Navbar() {
               />
 
               <span
-                className={`absolute bottom-0 left-0 h-px w-5 bg-white transition-all duration-300 ${
+                className={`absolute bottom-0 left-0 h-px w-5 bg-[var(--foreground)] transition-all duration-300 ${
                   menuOpen
-                    ? "bottom-1.75 -rotate-45 bg-[#d8c49c]"
+                    ? "bottom-1.75 -rotate-45 bg-[var(--brand-light)]"
                     : ""
                 }`}
               />
@@ -207,18 +346,30 @@ export default function Navbar() {
       {/* Mobile menu */}
       <AnimatePresence>
         {menuOpen && (
-          <div className="fixed inset-0 z-60 lg:hidden">
+          <div className="mobile-drawer-viewport fixed inset-x-0 top-0 z-60 lg:hidden">
 
             {/* Backdrop — clicking here closes the menu */}
             <motion.button
               type="button"
               aria-label="Fermer le menu"
               onClick={closeMenu}
-              initial={{ opacity: 0 }}
+              initial={
+                shouldReduceMotion
+                  ? false
+                  : { opacity: 0 }
+              }
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.35 }}
-              className="absolute inset-0 h-full w-full cursor-default bg-black/70 backdrop-blur-sm"
+              exit={
+                shouldReduceMotion
+                  ? undefined
+                  : { opacity: 0 }
+              }
+              transition={{
+                duration: shouldReduceMotion
+                  ? 0
+                  : 0.35,
+              }}
+              className="absolute inset-0 h-full w-full cursor-default bg-black/75"
             />
 
             {/* Drawer */}
@@ -228,26 +379,36 @@ export default function Navbar() {
               role="dialog"
               aria-modal="true"
               aria-label="Navigation mobile"
-              initial={{
-                x: "100%",
-              }}
+              initial={
+                shouldReduceMotion
+                  ? false
+                  : {
+                      x: "100%",
+                    }
+              }
               animate={{
                 x: 0,
               }}
-              exit={{
-                x: "100%",
-              }}
+              exit={
+                shouldReduceMotion
+                  ? undefined
+                  : {
+                      x: "100%",
+                    }
+              }
               transition={{
-                duration: 0.55,
+                duration: shouldReduceMotion
+                  ? 0
+                  : 0.55,
                 ease,
               }}
-              className="absolute right-0 top-0 flex h-full w-[88%] max-w-105 flex-col border-l border-white/10 bg-[#0b0b0a] shadow-2xl"
+              className="absolute right-0 top-0 flex h-full w-[88%] max-w-105 flex-col border-l border-[var(--border)] bg-[var(--background)] shadow-2xl"
             >
 
               {/* Top */}
-              <div className="flex min-h-25 items-center border-b border-white/10 px-7 pr-20">
+              <div className="mobile-drawer-safe-top flex shrink-0 items-center border-b border-[var(--border)] px-7 pr-20">
 
-                <p className="text-[9px] font-semibold uppercase tracking-[0.32em] text-[#b99a5b]">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.32em] text-[var(--brand)]">
                   Navigation
                 </p>
 
@@ -259,39 +420,47 @@ export default function Navbar() {
                 {navigation.map((item, index) => (
                   <motion.div
                     key={item.label}
-                    initial={{
-                      opacity: 0,
-                      x: 24,
-                    }}
+                    initial={
+                      shouldReduceMotion
+                        ? false
+                        : {
+                            opacity: 0,
+                            x: 24,
+                          }
+                    }
                     animate={{
                       opacity: 1,
                       x: 0,
                     }}
                     transition={{
-                      duration: 0.55,
-                      delay: 0.12 + index * 0.055,
+                      duration: shouldReduceMotion
+                        ? 0
+                        : 0.55,
+                      delay: shouldReduceMotion
+                        ? 0
+                        : 0.12 + index * 0.055,
                       ease,
                     }}
-                    className="border-b border-white/10"
+                    className="border-b border-[var(--border)]"
                   >
                     <Link
                       href={item.href}
-                      onClick={closeMenu}
+                      onClick={closeMenuForNavigation}
                       className="group flex items-center justify-between py-5"
                     >
                       <div className="flex items-center gap-4">
 
-                        <span className="text-[9px] tracking-[0.18em] text-[#5f5b55]">
+                        <span className="text-[9px] tracking-[0.18em] text-[var(--muted-subtle)]">
                           {item.number}
                         </span>
 
-                        <span className="font-display text-[28px] leading-none text-[#f5f1e8] transition-colors duration-300 group-hover:text-[#d8c49c]">
+                        <span className="font-display text-[28px] leading-none text-[var(--foreground)] transition-colors duration-300 group-hover:text-[var(--brand-light)]">
                           {item.label}
                         </span>
 
                       </div>
 
-                      <span className="text-sm text-[#68635c] transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#b99a5b]">
+                      <span className="text-sm text-[var(--muted-subtle)] transition-all duration-300 group-hover:translate-x-1 group-hover:text-[var(--brand)]">
                         →
                       </span>
                     </Link>
@@ -301,12 +470,12 @@ export default function Navbar() {
               </nav>
 
               {/* Bottom */}
-              <div className="border-t border-white/10 px-7 pb-7 pt-6">
+              <div className="mobile-drawer-safe-bottom border-t border-[var(--border)] px-7 pt-6">
 
                 <Link
                   href="/#reservation"
-                  onClick={closeMenu}
-                  className="group flex min-h-14 w-full items-center justify-center gap-3 bg-[#b99a5b] px-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#11100e] transition-colors duration-300 hover:bg-[#d8c49c]"
+                  onClick={closeMenuForNavigation}
+                  className="group flex min-h-14 w-full items-center justify-center gap-3 bg-[var(--brand)] px-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--surface)] transition-colors duration-300 hover:bg-[var(--brand-light)]"
                 >
                   Réserver une table
 
@@ -324,7 +493,7 @@ export default function Navbar() {
                       target="_blank"
                       rel="noreferrer"
                       aria-label="Facebook"
-                      className="flex h-10 w-10 items-center justify-center border border-white/10 text-sm text-white/60 transition-colors duration-300 hover:border-[#b99a5b] hover:text-[#d8c49c]"
+                      className="flex h-10 w-10 items-center justify-center border border-[var(--border)] text-sm text-[var(--muted)] transition-colors duration-300 hover:border-[var(--brand)] hover:text-[var(--brand-light)]"
                     >
                       <FaFacebookF />
                     </a>
@@ -334,7 +503,7 @@ export default function Navbar() {
                       target="_blank"
                       rel="noreferrer"
                       aria-label="Instagram"
-                      className="flex h-10 w-10 items-center justify-center border border-white/10 text-base text-white/60 transition-colors duration-300 hover:border-[#b99a5b] hover:text-[#d8c49c]"
+                      className="flex h-10 w-10 items-center justify-center border border-[var(--border)] text-base text-[var(--muted)] transition-colors duration-300 hover:border-[var(--brand)] hover:text-[var(--brand-light)]"
                     >
                       <FaInstagram />
                     </a>
@@ -344,14 +513,14 @@ export default function Navbar() {
                       target="_blank"
                       rel="noreferrer"
                       aria-label="WhatsApp"
-                      className="flex h-10 w-10 items-center justify-center border border-white/10 text-base text-white/60 transition-colors duration-300 hover:border-[#b99a5b] hover:text-[#d8c49c]"
+                      className="flex h-10 w-10 items-center justify-center border border-[var(--border)] text-base text-[var(--muted)] transition-colors duration-300 hover:border-[var(--brand)] hover:text-[var(--brand-light)]"
                     >
                       <FaWhatsapp />
                     </a>
 
                   </div>
 
-                  <p className="text-[8px] uppercase tracking-[0.2em] text-[#5f5b55]">
+                  <p className="text-[8px] uppercase tracking-[0.2em] text-[var(--muted-subtle)]">
                     Bonapriso · Douala
                   </p>
 

@@ -27,7 +27,7 @@ export default function SignatureDishes() {
   return (
     <section
       id="menu"
-      className="border-t border-white/10 bg-[#11100e] py-24 sm:py-28 md:py-32 lg:py-36"
+      className="border-t border-[var(--border)] bg-[var(--surface)] py-24 sm:py-28 md:py-32 lg:py-36"
     >
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 md:px-10 lg:px-12 xl:px-16">
 
@@ -35,24 +35,24 @@ export default function SignatureDishes() {
         <Reveal>
           <div className="mx-auto mb-16 max-w-3xl text-center md:mb-20">
             <div className="mb-6 flex items-center justify-center gap-4">
-              <span className="h-px w-10 bg-[#b99a5b]" />
+              <span className="h-px w-10 bg-[var(--brand)]" />
 
-              <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[#b99a5b] sm:text-[11px]">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[var(--brand)] sm:text-[11px]">
                 Nos signatures
               </p>
 
-              <span className="h-px w-10 bg-[#b99a5b]" />
+              <span className="h-px w-10 bg-[var(--brand)]" />
             </div>
 
-            <h2 className="font-display text-5xl font-medium leading-[0.96] tracking-tight text-[#f5f1e8] sm:text-6xl md:text-7xl">
+            <h2 className="font-display text-5xl font-medium leading-[0.96] tracking-tight text-[var(--foreground)] sm:text-6xl md:text-7xl">
               Une cuisine
 
-              <span className="mt-2 block italic text-[#d8c49c]">
+              <span className="mt-2 block italic text-[var(--brand-light)]">
                 qui se partage.
               </span>
             </h2>
 
-            <p className="mx-auto mt-7 max-w-xl text-sm leading-7 text-[#aaa398] md:text-base md:leading-8">
+            <p className="mx-auto mt-7 max-w-xl text-sm leading-7 text-[var(--muted)] md:text-base md:leading-8">
               Une sélection de créations inspirées de l&apos;univers culinaire de
               La Marquise, pensées pour être découvertes, savourées et partagées.
             </p>
@@ -69,7 +69,7 @@ export default function SignatureDishes() {
               className="min-w-0"
             >
               <article className="group min-w-0">
-                <div className="relative aspect-4/3 overflow-hidden bg-[#191814]">
+                <div className="relative aspect-4/3 overflow-hidden bg-[var(--surface-soft)]">
                   <Image
                     src={dish.image}
                     alt={dish.name}
@@ -80,21 +80,18 @@ export default function SignatureDishes() {
 
                   <div className="absolute inset-0 bg-linear-to-t from-black/35 via-transparent to-black/5" />
 
-                  <div className="absolute left-4 top-4 flex h-9 w-9 items-center justify-center border border-white/20 bg-black/35 text-[10px] tracking-[0.16em] text-white/80 backdrop-blur-sm sm:left-5 sm:top-5">
-                    0{index + 1}
-                  </div>
                 </div>
 
                 <div className="pt-5 sm:pt-6">
-                  <h3 className="font-display text-3xl font-medium leading-tight text-[#f5f1e8]">
+                  <h3 className="font-display text-3xl font-medium leading-tight text-[var(--foreground)]">
                     {dish.name}
                   </h3>
 
-                  <p className="mt-3 text-sm leading-6 text-[#8f8980]">
+                  <p className="mt-3 text-sm leading-6 text-[var(--muted-soft)]">
                     {dish.description}
                   </p>
 
-                  <div className="mt-6 h-px w-full bg-white/10" />
+                  <div className="mt-6 h-px w-full bg-[var(--border)]" />
                 </div>
               </article>
             </Reveal>
@@ -106,7 +103,7 @@ export default function SignatureDishes() {
           <div className="mt-16 flex justify-center md:mt-20">
            <Link
   href="/menu"
-  className="group inline-flex min-h-14 min-w-60 items-center justify-center gap-3 border border-[#b99a5b] bg-[#b99a5b] px-8 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#11100e] transition-colors duration-300 hover:bg-[#d8c49c] sm:text-[11px]"
+  className="group inline-flex min-h-14 min-w-60 items-center justify-center gap-3 border border-[var(--brand)] bg-[var(--brand)] px-8 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--surface)] transition-colors duration-300 hover:border-[var(--brand-light)] hover:bg-[var(--brand-light)] sm:text-[11px]"
 >
   Voir toute la carte
 

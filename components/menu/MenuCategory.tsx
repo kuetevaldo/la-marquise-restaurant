@@ -12,12 +12,12 @@ type MenuCategoryProps = {
 
 export default function MenuCategory({
   category,
-  accent = "#b99a5b",
+  accent = "var(--brand)",
 }: MenuCategoryProps) {
   return (
     <section
       id={category.id}
-      className="scroll-mt-52 border-t border-white/10"
+      className="menu-category-section border-t border-[var(--border)]"
     >
       <Reveal>
 
@@ -37,12 +37,12 @@ export default function MenuCategory({
             </p>
           </div>
 
-          <h3 className="font-display text-4xl font-medium leading-none text-[#f5f1e8] sm:text-5xl">
+          <h3 className="font-display text-4xl font-medium leading-none text-[var(--foreground)] sm:text-5xl">
             {category.name}
           </h3>
 
           {category.description && (
-            <p className="mt-4 max-w-xl text-sm leading-7 text-[#716c64]">
+            <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--muted-soft)]">
               {category.description}
             </p>
           )}
@@ -64,7 +64,7 @@ export default function MenuCategory({
 
         </div>
       ) : (
-        <p className="border-b border-white/10 pb-6 text-sm italic text-[#5f5b55]">
+        <p className="border-b border-[var(--border)] pb-6 text-sm italic text-[var(--muted-subtle)]">
           Cette partie de la carte sera ajoutée prochainement.
         </p>
       )}

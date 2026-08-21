@@ -1,7 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
-
 import type {
   MenuGroupData,
 } from "@/components/menu/MenuData";
@@ -13,8 +9,6 @@ type MenuGroupTabsProps = {
   accent: string;
 };
 
-const ease = [0.22, 1, 0.36, 1] as const;
-
 export default function MenuGroupTabs({
   groups,
   activeGroup,
@@ -22,7 +16,10 @@ export default function MenuGroupTabs({
   accent,
 }: MenuGroupTabsProps) {
   return (
-    <div className="sticky top-0 z-30 flex w-full overflow-x-auto border-b border-white/10 bg-[#11100e] scrollbar-none [&::-webkit-scrollbar]:hidden">
+    <div
+      data-menu-group-tabs
+      className="menu-group-tabs sticky z-30 flex w-full overflow-x-auto border-b border-[var(--border)] bg-[var(--surface)] scrollbar-none [&::-webkit-scrollbar]:hidden"
+    >
       {groups.map((group) => {
         const active = group.id === activeGroup;
 
@@ -32,27 +29,25 @@ export default function MenuGroupTabs({
             type="button"
             aria-pressed={active}
             onClick={() => onChange(group.id)}
-            className={`relative shrink-0 px-5 py-5 text-[9px] font-semibold uppercase tracking-[0.2em] transition-colors duration-300 sm:px-7 sm:text-[10px] ${
+            className={`relative flex h-full shrink-0 items-center px-5 text-[9px] font-semibold uppercase tracking-[0.2em] transition-colors duration-300 sm:px-7 sm:text-[10px] ${
               active
-                ? "text-[#f5f1e8]"
-                : "text-[#68635c] hover:text-[#aaa398]"
+                ? "text-[var(--foreground)]"
+                : "text-[var(--muted-subtle)] hover:text-[var(--muted)]"
             }`}
           >
             {group.name}
 
-            {active && (
-              <motion.span
-                layoutId="active-menu-group"
-                transition={{
-                  duration: 0.4,
-                  ease,
-                }}
-                className="absolute inset-x-0 bottom-0 h-px"
-                style={{
-                  backgroundColor: accent,
-                }}
-              />
-            )}
+            <span
+              aria-hidden="true"
+              className={`absolute inset-x-0 bottom-0 h-px origin-left transition-[opacity,transform] duration-300 ${
+                active
+                  ? "scale-x-100 opacity-100"
+                  : "scale-x-0 opacity-0"
+              }`}
+              style={{
+                backgroundColor: accent,
+              }}
+            />
           </button>
         );
       })}
