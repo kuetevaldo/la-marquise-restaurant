@@ -18,7 +18,7 @@ export default function MenuGroupTabs({
   return (
     <div
       data-menu-group-tabs
-      className="menu-group-tabs sticky z-30 flex w-full overflow-x-auto border-b border-[var(--border)] bg-[var(--surface)] scrollbar-none [&::-webkit-scrollbar]:hidden"
+      className="menu-group-tabs sticky z-30 flex w-full overflow-x-auto border-b border-(--border) bg-(--surface) scrollbar-none [&::-webkit-scrollbar]:hidden"
     >
       {groups.map((group) => {
         const active = group.id === activeGroup;
@@ -31,8 +31,8 @@ export default function MenuGroupTabs({
             onClick={() => onChange(group.id)}
             className={`relative flex h-full shrink-0 items-center px-5 text-[9px] font-semibold uppercase tracking-[0.2em] transition-colors duration-300 sm:px-7 sm:text-[10px] ${
               active
-                ? "text-[var(--foreground)]"
-                : "text-[var(--muted-subtle)] hover:text-[var(--muted)]"
+                ? "text-(--foreground)"
+                : "text-(--muted-subtle) hover:text-(--muted)"
             }`}
           >
             {group.name}
