@@ -233,7 +233,7 @@ export default function MenuSwitcher() {
   }, [activeCategory]);
 
   return (
-    <section className="bg-[var(--surface)] py-20 sm:py-24 md:py-28 lg:py-32">
+    <section className="bg-(--surface) py-20 sm:py-24 md:py-28 lg:py-32">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 md:px-10 lg:px-12 xl:px-16">
 
         {/* Brand heading */}
@@ -248,7 +248,7 @@ export default function MenuSwitcher() {
               Choisissez votre univers
             </p>
 
-            <h2 className="font-display mt-5 text-4xl font-medium text-[var(--foreground)] sm:text-5xl md:text-6xl">
+            <h2 className="font-display mt-5 text-4xl font-medium text-(--foreground) sm:text-5xl md:text-6xl">
               Deux identités,
               <span
                 className="italic"
@@ -261,7 +261,7 @@ export default function MenuSwitcher() {
               </span>
             </h2>
 
-            <p className="mx-auto mt-6 max-w-xl text-sm leading-7 text-[var(--muted-soft)] md:text-base md:leading-8">
+            <p className="mx-auto mt-6 max-w-xl text-sm leading-7 text-(--muted-soft) md:text-base md:leading-8">
               Découvrez les deux expériences La Marquise :
               le Restaurant et son univers raffiné, ou le
               Fast Food pour une carte plus généreuse et
@@ -284,8 +284,8 @@ export default function MenuSwitcher() {
               }}
               className={`group relative min-h-72 overflow-hidden border text-left transition-colors duration-300 sm:min-h-80 ${
                 isRestaurant
-                  ? "border-[var(--brand)]"
-                  : "border-[var(--border)] hover:border-[var(--border-strong)]"
+                  ? "border-(--brand)"
+                  : "border-(--border) hover:border-(--border-strong)"
               }`}
             >
               <Image
@@ -301,7 +301,7 @@ export default function MenuSwitcher() {
 
               <span
                 aria-hidden="true"
-                className={`absolute inset-x-0 top-0 z-10 h-0.5 origin-left bg-[var(--brand)] transition-[opacity,transform] duration-300 ${
+                className={`absolute inset-x-0 top-0 z-10 h-0.5 origin-left bg-(--brand) transition-[opacity,transform] duration-300 ${
                   isRestaurant
                     ? "scale-x-100 opacity-100"
                     : "scale-x-0 opacity-0"
@@ -309,29 +309,29 @@ export default function MenuSwitcher() {
               />
 
               <div className="relative z-10 flex min-h-72 flex-col justify-end p-6 sm:min-h-80 sm:p-8">
-                <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[var(--brand)]">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-(--brand)">
                   La Marquise
                 </p>
 
-                <h3 className="font-display mt-3 text-4xl text-[var(--foreground)] sm:text-5xl">
+                <h3 className="font-display mt-3 text-4xl text-(--foreground) sm:text-5xl">
                   Restaurant
                 </h3>
 
-                <p className="mt-3 max-w-sm text-sm leading-6 text-[var(--foreground-soft)]">
+                <p className="mt-3 max-w-sm text-sm leading-6 text-(--foreground-soft)">
                   Cuisine internationale, orientale, bar,
                   cocktails et sélection de vins.
                 </p>
 
-                <div className="mt-6 flex items-center justify-between border-t border-[var(--border)] pt-5">
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-[var(--muted)]">
+                <div className="mt-6 flex items-center justify-between border-t border-(--border) pt-5">
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-(--muted)">
                     Noir · Or
                   </span>
 
                   <span
                     className={`text-sm transition-all duration-300 ${
                       isRestaurant
-                        ? "translate-x-1 text-[var(--brand-light)]"
-                        : "text-[var(--muted)] group-hover:translate-x-1 group-hover:text-[var(--brand-light)]"
+                        ? "translate-x-1 text-(--brand-light)"
+                        : "text-(--muted) group-hover:translate-x-1 group-hover:text-(--brand-light)"
                     }`}
                   >
                     →
@@ -350,8 +350,8 @@ export default function MenuSwitcher() {
               }}
               className={`group relative min-h-72 overflow-hidden border text-left transition-colors duration-300 sm:min-h-80 ${
                 !isRestaurant
-                  ? "border-[var(--fastfood)]"
-                  : "border-[var(--border)] hover:border-[var(--border-strong)]"
+                  ? "border-(--fastfood)"
+                  : "border-(--border) hover:border-(--border-strong)"
               }`}
             >
               <Image
@@ -363,11 +363,11 @@ export default function MenuSwitcher() {
               />
 
               <div className="absolute inset-0 bg-black/40" />
-              <div className="absolute inset-0 bg-linear-to-t from-[var(--fastfood-deep)]/95 via-black/30 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-(--fastfood-deep)/95 via-black/30 to-transparent" />
 
               <span
                 aria-hidden="true"
-                className={`absolute inset-x-0 top-0 z-10 h-0.5 origin-left bg-[var(--fastfood)] transition-[opacity,transform] duration-300 ${
+                className={`absolute inset-x-0 top-0 z-10 h-0.5 origin-left bg-(--fastfood) transition-[opacity,transform] duration-300 ${
                   !isRestaurant
                     ? "scale-x-100 opacity-100"
                     : "scale-x-0 opacity-0"
@@ -375,29 +375,29 @@ export default function MenuSwitcher() {
               />
 
               <div className="relative z-10 flex min-h-72 flex-col justify-end p-6 sm:min-h-80 sm:p-8">
-                <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[var(--fastfood-light)]">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-(--fastfood-light)">
                   La Marquise
                 </p>
 
-                <h3 className="font-display mt-3 text-4xl text-[var(--foreground)] sm:text-5xl">
+                <h3 className="font-display mt-3 text-4xl text-(--foreground) sm:text-5xl">
                   Fast Food
                 </h3>
 
-                <p className="mt-3 max-w-sm text-sm leading-6 text-[var(--foreground-soft)]">
+                <p className="mt-3 max-w-sm text-sm leading-6 text-(--foreground-soft)">
                   Burgers, fried chicken, pizzas,
                   desserts et boissons.
                 </p>
 
-                <div className="mt-6 flex items-center justify-between border-t border-[var(--border)] pt-5">
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-[var(--muted)]">
+                <div className="mt-6 flex items-center justify-between border-t border-(--border) pt-5">
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-(--muted)">
                     Rouge · Or
                   </span>
 
                   <span
                     className={`text-sm transition-all duration-300 ${
                       !isRestaurant
-                        ? "translate-x-1 text-[var(--fastfood-light)]"
-                        : "text-[var(--muted)] group-hover:translate-x-1 group-hover:text-[var(--fastfood-light)]"
+                        ? "translate-x-1 text-(--fastfood-light)"
+                        : "text-(--muted) group-hover:translate-x-1 group-hover:text-(--fastfood-light)"
                     }`}
                   >
                     →
@@ -412,7 +412,7 @@ export default function MenuSwitcher() {
         {/* Selected menu */}
         <div className="mt-16">
             {/* Menu identity */}
-            <div className="border-b border-[var(--border)] pb-8">
+            <div className="border-b border-(--border) pb-8">
               <p
                 className="text-[10px] font-semibold uppercase tracking-[0.28em]"
                 style={{
@@ -424,7 +424,7 @@ export default function MenuSwitcher() {
                   : "La Marquise Fast Food"}
               </p>
 
-              <h3 className="font-display mt-3 max-w-3xl text-4xl leading-tight text-[var(--foreground)] sm:text-5xl">
+              <h3 className="font-display mt-3 max-w-3xl text-4xl leading-tight text-(--foreground) sm:text-5xl">
                 {isRestaurant
                   ? "Cuisine, bar & cave"
                   : "Fast food & gourmandises"}
@@ -454,7 +454,7 @@ export default function MenuSwitcher() {
               </p>
 
               {activeGroup.description && (
-                <p className="mt-3 max-w-xl text-sm leading-7 text-[var(--muted-soft)]">
+                <p className="mt-3 max-w-xl text-sm leading-7 text-(--muted-soft)">
                   {activeGroup.description}
                 </p>
               )}
@@ -464,7 +464,7 @@ export default function MenuSwitcher() {
             <div
               ref={categoryNavRef}
               data-menu-category-tabs
-              className="menu-category-tabs sticky z-20 flex items-center gap-2 overflow-x-auto border-y border-[var(--border)] bg-[var(--surface)] scrollbar-none [&::-webkit-scrollbar]:hidden"
+              className="menu-category-tabs sticky z-20 flex items-center gap-2 overflow-x-auto border-y border-(--border) bg-(--surface) scrollbar-none [&::-webkit-scrollbar]:hidden"
             >
               {activeGroup.categories.map(
                 (category) => {
