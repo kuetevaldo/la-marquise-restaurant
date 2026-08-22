@@ -59,7 +59,7 @@ function buildWhatsAppUrl(item: MenuItemData) {
     `Pouvez-vous me confirmer la disponibilité ?`;
 
   return (
-    "https://wa.me/237670858585?text=" +
+    "https://wa.me/698434343?text=" +
     encodeURIComponent(message)
   );
 }
