@@ -17,9 +17,22 @@
   --cream: var(--foreground);
   --border: rgba(226, 200, 168, 0.14);
   --border-strong: rgba(226, 200, 168, 0.24);
-  --fastfood: #9e302d;
-  --fastfood-light: #d97972;
-  --fastfood-deep: #2a0505;
+  --fastfood: #8f0f0f;
+  --fastfood-light: #f2b233;
+  --fastfood-deep: #6f0b0b;
+  --fastfood-background: #6f0b0b;
+  --fastfood-surface: #8f0f0f;
+  --fastfood-surface-elevated: #a31616;
+  --fastfood-gold: #f2b233;
+  --fastfood-gold-soft: #f7c45a;
+  --fastfood-cream: #fff4df;
+  --fastfood-muted: #eed9c4;
+  --fastfood-muted-deep: #d9bfa8;
+  --fastfood-ink: #2a0909;
+  --fastfood-brand-red: #810b0b;
+  --fastfood-border: rgba(242, 178, 51, 0.22);
+  --fastfood-border-strong: rgba(247, 196, 90, 0.48);
+
   --navbar-background-top: rgba(11, 11, 10, 0.72);
   --navbar-background-scrolled: rgba(11, 11, 10, 0.97);
   --navbar-border-top: rgba(226, 200, 168, 0.08);
@@ -29,7 +42,6 @@
     var(--navbar-bar-height) + env(safe-area-inset-top, 0px)
   );
   --menu-group-tabs-height: 4rem;
-  --menu-category-tabs-height: 4.5rem;
   --anchor-scroll-offset: calc(
     var(--navbar-height) + 1.5rem
   );
@@ -131,6 +143,24 @@ video {
   font-family: var(--font-cormorant), Georgia, serif;
 }
 
+.font-fastfood-display {
+  font-family: var(--font-barlow-condensed), Arial Narrow, sans-serif;
+}
+
+.fastfood-theme {
+  background: var(--fastfood-deep);
+  color: var(--fastfood-cream);
+}
+
+.fastfood-theme :focus-visible {
+  outline-color: var(--fastfood-gold-soft);
+}
+
+.fastfood-theme ::selection {
+  background: var(--fastfood-gold);
+  color: var(--fastfood-ink);
+}
+
 ::selection {
   background: var(--brand-light);
   color: var(--background);
@@ -160,6 +190,20 @@ video {
     1.5rem,
     env(safe-area-inset-left, 0px)
   );
+}
+.fastfood-navbar {
+  height: var(--navbar-height);
+  padding-top: env(safe-area-inset-top, 0px);
+  border-color: transparent;
+  background: transparent;
+  transition:
+    background-color 250ms ease,
+    border-color 250ms ease;
+}
+
+.fastfood-navbar[data-scrolled="true"] {
+  border-color: rgba(242, 178, 51, 0.22);
+  background: rgba(75, 5, 5, 0.96);
 }
 
 @media (min-width: 40rem) {
@@ -209,23 +253,25 @@ video {
   min-height: calc(100svh - var(--navbar-height));
 }
 
+.fastfood-hero-content {
+  transform: translateY(-2.25rem);
+}
+
+@media (min-width: 48rem) {
+  .fastfood-hero-content {
+    transform: none;
+  }
+}
+
 .menu-group-tabs {
   top: var(--navbar-height);
   height: var(--menu-group-tabs-height);
-}
-
-.menu-category-tabs {
-  top: calc(
-    var(--navbar-height) + var(--menu-group-tabs-height)
-  );
-  height: var(--menu-category-tabs-height);
 }
 
 .menu-category-section {
   scroll-margin-top: calc(
     var(--navbar-height) +
       var(--menu-group-tabs-height) +
-      var(--menu-category-tabs-height) +
       1rem
   );
 }
@@ -236,7 +282,9 @@ video {
   #events,
   #gallery,
   #contact,
-  #reservation
+  #reservation,
+  #incontournables,
+  #order
 ) {
   scroll-margin-top: var(--anchor-scroll-offset);
 }

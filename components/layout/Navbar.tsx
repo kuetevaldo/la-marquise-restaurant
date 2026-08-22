@@ -17,32 +17,32 @@ import {
 const navigation = [
   {
     label: "La Marquise",
-    href: "/#about",
+    href: "/restaurant#about",
     number: "01",
   },
   {
     label: "La Carte",
-    href: "/menu",
+    href: "/restaurant#menu",
     number: "02",
   },
   {
     label: "Expérience",
-    href: "/#experience",
+    href: "/restaurant#experience",
     number: "03",
   },
   {
     label: "Événements",
-    href: "/#events",
+    href: "/restaurant#events",
     number: "04",
   },
   {
     label: "Galerie",
-    href: "/#gallery",
+    href: "/restaurant#gallery",
     number: "05",
   },
   {
     label: "Contact",
-    href: "/#contact",
+    href: "/restaurant#contact",
     number: "06",
   },
 ];
@@ -266,7 +266,7 @@ export default function Navbar() {
           <Link
   href="/"
   aria-label="La Marquise Restaurant"
-  className="relative z-50 block h-18 w-44 sm:h-20 sm:w-52"
+  className="relative z-50 block h-18 w-44"
 >
             <Image
               src="/images/logo.png"
@@ -279,28 +279,38 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop navigation */}
-          <div className="hidden items-center gap-8 lg:flex xl:gap-10">
+<div className="hidden items-center gap-8 lg:flex xl:gap-10">
+  <nav className="flex items-center gap-7 xl:gap-9">
+    {navigation.map((item) => (
+      <Link
+        key={item.label}
+        href={item.href}
+        className="relative text-[10px] font-semibold uppercase tracking-[0.18em] text-(--foreground-soft) transition-colors duration-300 after:absolute after:-bottom-2 after:left-0 after:h-px after:w-0 after:bg-(--brand) after:transition-all after:duration-300 hover:text-(--brand-light) hover:after:w-full xl:text-[11px]"
+      >
+        {item.label}
+      </Link>
+    ))}
+  </nav>
 
-            <nav className="flex items-center gap-7 xl:gap-9">
-              {navigation.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="relative text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--foreground-soft)] transition-colors duration-300 after:absolute after:-bottom-2 after:left-0 after:h-px after:w-0 after:bg-[var(--brand)] after:transition-all after:duration-300 hover:text-[var(--brand-light)] hover:after:w-full xl:text-[11px]"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
+  {/* Switch to Fast Food */}
+  <Link
+    href="/fast-food"
+    className="group flex items-center gap-2 border-l border-(--border) pl-6 text-[9px] font-semibold uppercase tracking-[0.18em] text-(--muted) transition-colors duration-300 hover:text-(--brand-light)"
+  >
+    Fast Food
 
-            <Link
-              href="/#reservation"
-              className="inline-flex min-h-12 items-center justify-center border border-[var(--brand)] bg-[var(--brand)] px-6 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--surface)] transition-colors duration-300 hover:border-[var(--brand-light)] hover:bg-[var(--brand-light)]"
-            >
-              Réserver
-            </Link>
+    <span className="text-(--brand) transition-transform duration-300 group-hover:translate-x-1">
+      →
+    </span>
+  </Link>
 
-          </div>
+  <Link
+    href="/restaurant#reservation"
+    className="inline-flex min-h-12 items-center justify-center border border-(--brand) bg-(--brand) px-6 text-[10px] font-semibold uppercase tracking-[0.16em] text-(--surface) transition-colors duration-300 hover:border-(--brand-light) hover:bg-(--brand-light)"
+  >
+    Réserver
+  </Link>
+</div>
 
           {/* Mobile hamburger */}
           <button
@@ -309,20 +319,20 @@ export default function Navbar() {
             aria-expanded={menuOpen}
             aria-controls="mobile-navigation"
             onClick={() => setMenuOpen((current) => !current)}
-            className="relative z-70 flex h-12 w-12 items-center justify-center border border-[var(--border-strong)] bg-[var(--surface)] transition-colors duration-300 hover:border-[var(--brand)] lg:hidden"
+            className="relative z-70 flex h-12 w-12 items-center justify-center border border-(--border-strong) bg-(--surface) transition-colors duration-300 hover:border-(--brand) lg:hidden"
           >
             <div className="relative h-4 w-5">
 
               <span
-                className={`absolute left-0 top-0 h-px w-5 bg-[var(--foreground)] transition-all duration-300 ${
+                className={`absolute left-0 top-0 h-px w-5 bg-(--foreground) transition-all duration-300 ${
                   menuOpen
-                    ? "top-2 rotate-45 bg-[var(--brand-light)]"
+                    ? "top-2 rotate-45 bg-(--brand-light)"
                     : ""
                 }`}
               />
 
               <span
-                className={`absolute left-0 top-2 h-px bg-[var(--foreground)] transition-all duration-300 ${
+                className={`absolute left-0 top-2 h-px bg-(--foreground) transition-all duration-300 ${
                   menuOpen
                     ? "w-0 opacity-0"
                     : "w-3.5 opacity-100"
@@ -330,9 +340,9 @@ export default function Navbar() {
               />
 
               <span
-                className={`absolute bottom-0 left-0 h-px w-5 bg-[var(--foreground)] transition-all duration-300 ${
+                className={`absolute bottom-0 left-0 h-px w-5 bg-(--foreground) transition-all duration-300 ${
                   menuOpen
-                    ? "bottom-1.75 -rotate-45 bg-[var(--brand-light)]"
+                    ? "bottom-1.75 -rotate-45 bg-(--brand-light)"
                     : ""
                 }`}
               />
@@ -402,13 +412,13 @@ export default function Navbar() {
                   : 0.55,
                 ease,
               }}
-              className="absolute right-0 top-0 flex h-full w-[88%] max-w-105 flex-col border-l border-[var(--border)] bg-[var(--background)] shadow-2xl"
+              className="absolute right-0 top-0 flex h-full w-[88%] max-w-105 flex-col border-l border-(--border) bg-(--background) shadow-2xl"
             >
 
               {/* Top */}
-              <div className="mobile-drawer-safe-top flex shrink-0 items-center border-b border-[var(--border)] px-7 pr-20">
+              <div className="mobile-drawer-safe-top flex shrink-0 items-center border-b border-(--border) px-7 pr-20">
 
-                <p className="text-[9px] font-semibold uppercase tracking-[0.32em] text-[var(--brand)]">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.32em] text-(--brand)">
                   Navigation
                 </p>
 
@@ -441,7 +451,7 @@ export default function Navbar() {
                         : 0.12 + index * 0.055,
                       ease,
                     }}
-                    className="border-b border-[var(--border)]"
+                    className="border-b border-(--border)"
                   >
                     <Link
                       href={item.href}
@@ -450,17 +460,17 @@ export default function Navbar() {
                     >
                       <div className="flex items-center gap-4">
 
-                        <span className="text-[9px] tracking-[0.18em] text-[var(--muted-subtle)]">
+                        <span className="text-[9px] tracking-[0.18em] text-(--muted-subtle)">
                           {item.number}
                         </span>
 
-                        <span className="font-display text-[28px] leading-none text-[var(--foreground)] transition-colors duration-300 group-hover:text-[var(--brand-light)]">
+                        <span className="font-display text-[28px] leading-none text-(--foreground) transition-colors duration-300 group-hover:text-(--brand-light)">
                           {item.label}
                         </span>
 
                       </div>
 
-                      <span className="text-sm text-[var(--muted-subtle)] transition-all duration-300 group-hover:translate-x-1 group-hover:text-[var(--brand)]">
+                      <span className="text-sm text-(--muted-subtle) transition-all duration-300 group-hover:translate-x-1 group-hover:text-(--brand)">
                         →
                       </span>
                     </Link>
@@ -470,12 +480,12 @@ export default function Navbar() {
               </nav>
 
               {/* Bottom */}
-              <div className="mobile-drawer-safe-bottom border-t border-[var(--border)] px-7 pt-6">
+              <div className="mobile-drawer-safe-bottom border-t border-(--border) px-7 pt-6">
 
                 <Link
-                  href="/#reservation"
+                  href="/restaurant#reservation"
                   onClick={closeMenuForNavigation}
-                  className="group flex min-h-14 w-full items-center justify-center gap-3 bg-[var(--brand)] px-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--surface)] transition-colors duration-300 hover:bg-[var(--brand-light)]"
+                  className="group flex min-h-14 w-full items-center justify-center gap-3 bg-(--brand) px-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-(--surface) transition-colors duration-300 hover:bg-(--brand-light)"
                 >
                   Réserver une table
 
@@ -483,6 +493,18 @@ export default function Navbar() {
                     →
                   </span>
                 </Link>
+                <Link
+  href="/fast-food"
+  onClick={closeMenuForNavigation}
+  className="group mt-4 flex min-h-12 w-full items-center justify-between border border-(--border) px-5 text-[9px] font-semibold uppercase tracking-[0.18em] text-(--foreground-soft) transition-colors duration-300 hover:border-(--brand) hover:text-(--brand-light)"
+>
+  <span>Découvrir le Fast Food</span>
+
+  <span className="text-(--brand) transition-transform duration-300 group-hover:translate-x-1">
+    →
+  </span>
+</Link>
+                
 
                 <div className="mt-6 flex items-center justify-between">
 
@@ -493,7 +515,7 @@ export default function Navbar() {
                       target="_blank"
                       rel="noreferrer"
                       aria-label="Facebook"
-                      className="flex h-10 w-10 items-center justify-center border border-[var(--border)] text-sm text-[var(--muted)] transition-colors duration-300 hover:border-[var(--brand)] hover:text-[var(--brand-light)]"
+                      className="flex h-10 w-10 items-center justify-center border border-(--border) text-sm text-(--muted) transition-colors duration-300 hover:border-(--brand) hover:text-(--brand-light)"
                     >
                       <FaFacebookF />
                     </a>
@@ -503,7 +525,7 @@ export default function Navbar() {
                       target="_blank"
                       rel="noreferrer"
                       aria-label="Instagram"
-                      className="flex h-10 w-10 items-center justify-center border border-[var(--border)] text-base text-[var(--muted)] transition-colors duration-300 hover:border-[var(--brand)] hover:text-[var(--brand-light)]"
+                      className="flex h-10 w-10 items-center justify-center border border-(--border) text-base text-(--muted) transition-colors duration-300 hover:border-(--brand) hover:text-(--brand-light)"
                     >
                       <FaInstagram />
                     </a>
@@ -513,14 +535,14 @@ export default function Navbar() {
                       target="_blank"
                       rel="noreferrer"
                       aria-label="WhatsApp"
-                      className="flex h-10 w-10 items-center justify-center border border-[var(--border)] text-base text-[var(--muted)] transition-colors duration-300 hover:border-[var(--brand)] hover:text-[var(--brand-light)]"
+                      className="flex h-10 w-10 items-center justify-center border border-(--border) text-base text-(--muted) transition-colors duration-300 hover:border-(--brand) hover:text-(--brand-light)"
                     >
                       <FaWhatsapp />
                     </a>
 
                   </div>
 
-                  <p className="text-[8px] uppercase tracking-[0.2em] text-[var(--muted-subtle)]">
+                  <p className="text-[8px] uppercase tracking-[0.2em] text-(--muted-subtle)">
                     Bonapriso · Douala
                   </p>
 

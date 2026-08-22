@@ -26,6 +26,9 @@ export default function MenuSwitcher() {
   const [activeCategory, setActiveCategory] =
     useState("");
 
+  const [openCategory, setOpenCategory] =
+    useState<string | null>(null);
+
   const [restaurantGroup, setRestaurantGroup] =
     useState("cuisine");
 
@@ -281,6 +284,7 @@ export default function MenuSwitcher() {
               onClick={() => {
                 setActiveMenu("restaurant");
                 setActiveCategory("");
+                setOpenCategory(null);
               }}
               className={`group relative min-h-72 overflow-hidden border text-left transition-colors duration-300 sm:min-h-80 ${
                 isRestaurant
@@ -347,6 +351,7 @@ export default function MenuSwitcher() {
               onClick={() => {
                 setActiveMenu("fastfood");
                 setActiveCategory("");
+                setOpenCategory(null);
               }}
               className={`group relative min-h-72 overflow-hidden border text-left transition-colors duration-300 sm:min-h-80 ${
                 !isRestaurant
@@ -438,6 +443,7 @@ export default function MenuSwitcher() {
               onChange={(groupId) => {
                 changeGroup(groupId);
                 setActiveCategory("");
+                setOpenCategory(null);
               }}
               accent={accent}
             />
@@ -522,6 +528,14 @@ export default function MenuSwitcher() {
                   key={category.id}
                   category={category}
                   accent={accent}
+                  isOpen={openCategory === category.id}
+                  onToggle={() => {
+                    setOpenCategory((current) =>
+                      current === category.id
+                        ? null
+                        : category.id
+                    );
+                  }}
                 />
               )
             )}

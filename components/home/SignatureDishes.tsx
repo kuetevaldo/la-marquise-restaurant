@@ -26,8 +26,8 @@ const dishes = [
 export default function SignatureDishes() {
   return (
     <section
-      id="menu"
-      className="border-t border-[var(--border)] bg-[var(--surface)] py-24 sm:py-28 md:py-32 lg:py-36"
+      id="signatures"
+      className="border-t border-(--border) bg-(--surface) py-24 sm:py-28 md:py-32 lg:py-36"
     >
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 md:px-10 lg:px-12 xl:px-16">
 
@@ -35,24 +35,24 @@ export default function SignatureDishes() {
         <Reveal>
           <div className="mx-auto mb-16 max-w-3xl text-center md:mb-20">
             <div className="mb-6 flex items-center justify-center gap-4">
-              <span className="h-px w-10 bg-[var(--brand)]" />
+              <span className="h-px w-10 bg-(--brand)" />
 
-              <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[var(--brand)] sm:text-[11px]">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-(--brand) sm:text-[11px]">
                 Nos signatures
               </p>
 
-              <span className="h-px w-10 bg-[var(--brand)]" />
+              <span className="h-px w-10 bg-(--brand)" />
             </div>
 
-            <h2 className="font-display text-5xl font-medium leading-[0.96] tracking-tight text-[var(--foreground)] sm:text-6xl md:text-7xl">
+            <h2 className="font-display text-5xl font-medium leading-[0.96] tracking-tight text-(--foreground) sm:text-6xl md:text-7xl">
               Une cuisine
 
-              <span className="mt-2 block italic text-[var(--brand-light)]">
+              <span className="mt-2 block italic text-(--brand-light)">
                 qui se partage.
               </span>
             </h2>
 
-            <p className="mx-auto mt-7 max-w-xl text-sm leading-7 text-[var(--muted)] md:text-base md:leading-8">
+            <p className="mx-auto mt-7 max-w-xl text-sm leading-7 text-(--muted) md:text-base md:leading-8">
               Une sélection de créations inspirées de l&apos;univers culinaire de
               La Marquise, pensées pour être découvertes, savourées et partagées.
             </p>
@@ -69,7 +69,7 @@ export default function SignatureDishes() {
               className="min-w-0"
             >
               <article className="group min-w-0">
-                <div className="relative aspect-4/3 overflow-hidden bg-[var(--surface-soft)]">
+                <div className="relative aspect-4/3 overflow-hidden bg-(--surface-soft)">
                   <Image
                     src={dish.image}
                     alt={dish.name}
@@ -83,15 +83,15 @@ export default function SignatureDishes() {
                 </div>
 
                 <div className="pt-5 sm:pt-6">
-                  <h3 className="font-display text-3xl font-medium leading-tight text-[var(--foreground)]">
+                  <h3 className="font-display text-3xl font-medium leading-tight text-(--foreground)">
                     {dish.name}
                   </h3>
 
-                  <p className="mt-3 text-sm leading-6 text-[var(--muted-soft)]">
+                  <p className="mt-3 text-sm leading-6 text-(--muted-soft)">
                     {dish.description}
                   </p>
 
-                  <div className="mt-6 h-px w-full bg-[var(--border)]" />
+                  <div className="mt-6 h-px w-full bg-(--border)" />
                 </div>
               </article>
             </Reveal>
@@ -102,8 +102,8 @@ export default function SignatureDishes() {
         <Reveal delay={0.15}>
           <div className="mt-16 flex justify-center md:mt-20">
            <Link
-  href="/menu"
-  className="group inline-flex min-h-14 min-w-60 items-center justify-center gap-3 border border-[var(--brand)] bg-[var(--brand)] px-8 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--surface)] transition-colors duration-300 hover:border-[var(--brand-light)] hover:bg-[var(--brand-light)] sm:text-[11px]"
+ href="/restaurant#menu"
+  className="group inline-flex min-h-14 min-w-60 items-center justify-center gap-3 border border-(--brand) bg-(--brand) px-8 text-[10px] font-semibold uppercase tracking-[0.18em] text-(--surface) transition-colors duration-300 hover:border-(--brand-light) hover:bg-(--brand-light) sm:text-[11px]"
 >
   Voir toute la carte
 

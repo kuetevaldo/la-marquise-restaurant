@@ -22,9 +22,9 @@ function enterStyle(
 
 export default function Hero() {
   return (
-    <section className="home-hero relative flex items-center overflow-hidden bg-[var(--background)]">
+    <section className="home-hero relative flex items-center overflow-hidden bg-(--background)">
       <Image
-        src="/images/hero.image.png"
+        src="/images/hero.image.jpg"
         alt="Interior of La Marquise Restaurant"
         fill
         priority
@@ -44,9 +44,9 @@ export default function Hero() {
             className="premium-enter mb-6 flex items-center gap-4"
             style={enterStyle(100, 680, 12)}
           >
-            <span className="h-px w-10 bg-[var(--brand)]" />
+            <span className="h-px w-10 bg-(--brand)" />
 
-            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--brand)] sm:text-[11px] md:text-xs">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-(--brand) sm:text-[11px] md:text-xs">
               Restaurant · Bonapriso, Douala
             </p>
           </div>
@@ -54,7 +54,7 @@ export default function Hero() {
           {/* Heading */}
           <h1
             aria-label="Une expérience à savourer."
-            className="font-display max-w-4xl text-5xl font-medium leading-[0.94] tracking-tight text-[var(--foreground)] sm:text-6xl md:text-7xl lg:text-[80px] xl:text-[92px]"
+            className="font-display max-w-4xl text-5xl font-medium leading-[0.94] tracking-tight text-(--foreground) sm:text-6xl md:text-7xl lg:text-[80px] xl:text-[92px]"
           >
             <span
               className="premium-enter block"
@@ -63,7 +63,7 @@ export default function Hero() {
               Une expérience
             </span>
             <span
-              className="premium-enter block italic text-[var(--brand-light)]"
+              className="premium-enter block italic text-(--brand-light)"
               style={enterStyle(270, 850, 20)}
             >
               à savourer.
@@ -72,10 +72,10 @@ export default function Hero() {
 
           {/* Bottom content */}
           <div
-            className="mt-10 flex max-w-5xl flex-col gap-7 border-t border-[var(--border-strong)] pt-7 lg:flex-row lg:items-end lg:justify-between"
+            className="mt-10 flex max-w-5xl flex-col gap-7 border-t border-(--border-strong) pt-7 lg:flex-row lg:items-end lg:justify-between"
           >
             <p
-              className="premium-enter max-w-xl text-sm leading-7 text-[var(--foreground-soft)] md:text-base md:leading-8"
+              className="premium-enter max-w-xl text-sm leading-7 text-(--foreground-soft) md:text-base md:leading-8"
               style={enterStyle(390, 760, 16)}
             >
               Cuisine généreuse, cadre élégant et moments pensés pour être
@@ -86,20 +86,20 @@ export default function Hero() {
               className="premium-enter flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
               style={enterStyle(520, 760, 16)}
             >
-  <a
-    href="#reservation"
-    className="group inline-flex min-h-14 items-center justify-center gap-3 border border-[var(--brand)] bg-[var(--brand)] px-7 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--surface)] transition-colors duration-300 hover:border-[var(--brand-light)] hover:bg-[var(--brand-light)] sm:px-8 sm:text-[11px]"
+  <Link
+    href="/restaurant#reservation"
+    className="group inline-flex min-h-14 items-center justify-center gap-3 border border-(--brand) bg-(--brand) px-7 text-[10px] font-semibold uppercase tracking-[0.16em] text-(--surface) transition-colors duration-300 hover:border-(--brand-light) hover:bg-(--brand-light) sm:px-8 sm:text-[11px]"
   >
     Réserver une table
 
     <span className="transition-transform duration-300 group-hover:translate-x-1">
       →
     </span>
-  </a>
+  </Link>
 
   <Link
-    href="/menu"
-    className="group inline-flex min-h-14 items-center justify-center gap-3 border border-[var(--border-strong)] bg-[var(--surface)]/55 px-7 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--foreground)] transition-colors duration-300 hover:border-[var(--brand)] hover:bg-[var(--surface)] hover:text-[var(--brand-light)] sm:px-8 sm:text-[11px]"
+    href="/restaurant#menu"
+    className="group inline-flex min-h-14 items-center justify-center gap-3 border border-(--border-strong) bg-(--surface)/55 px-7 text-[10px] font-semibold uppercase tracking-[0.16em] text-(--foreground) transition-colors duration-300 hover:border-(--brand) hover:bg-(--surface) hover:text-(--brand-light) sm:px-8 sm:text-[11px]"
   >
     Découvrir la carte
 

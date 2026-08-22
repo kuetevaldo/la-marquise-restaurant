@@ -7,6 +7,7 @@ type MenuGroupTabsProps = {
   activeGroup: string;
   onChange: (group: string) => void;
   accent: string;
+  theme?: "restaurant" | "fastfood";
 };
 
 export default function MenuGroupTabs({
@@ -14,25 +15,40 @@ export default function MenuGroupTabs({
   activeGroup,
   onChange,
   accent,
+  theme = "restaurant",
 }: MenuGroupTabsProps) {
+  const isRestaurant =
+    theme === "restaurant";
+
   return (
     <div
       data-menu-group-tabs
-      className="menu-group-tabs sticky z-30 flex w-full overflow-x-auto border-b border-(--border) bg-(--surface) scrollbar-none [&::-webkit-scrollbar]:hidden"
+      className={`menu-group-tabs sticky z-30 flex w-full overflow-x-auto border-b scrollbar-none [&::-webkit-scrollbar]:hidden ${
+        isRestaurant
+          ? "border-(--border) bg-(--surface)"
+          : "border-white/10 bg-(--fastfood-surface)"
+      }`}
     >
       {groups.map((group) => {
-        const active = group.id === activeGroup;
+        const active =
+          group.id === activeGroup;
 
         return (
           <button
             key={group.id}
             type="button"
             aria-pressed={active}
-            onClick={() => onChange(group.id)}
-            className={`relative flex h-full shrink-0 items-center px-5 text-[9px] font-semibold uppercase tracking-[0.2em] transition-colors duration-300 sm:px-7 sm:text-[10px] ${
+            onClick={() =>
+              onChange(group.id)
+            }
+            className={`relative flex h-full min-h-14 shrink-0 items-center px-5 text-[9px] font-semibold uppercase tracking-[0.2em] transition-colors duration-300 sm:px-7 sm:text-[10px] ${
               active
-                ? "text-(--foreground)"
-                : "text-(--muted-subtle) hover:text-(--muted)"
+                ? isRestaurant
+                  ? "text-(--foreground)"
+                  : "text-[#fff3de]"
+                : isRestaurant
+                  ? "text-(--muted-subtle) hover:text-(--muted)"
+                  : "text-[#bca79e] hover:text-[#fff3de]"
             }`}
           >
             {group.name}
@@ -51,7 +67,6 @@ export default function MenuGroupTabs({
           </button>
         );
       })}
-
     </div>
   );
 }

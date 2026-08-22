@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import {
+  Barlow_Condensed,
+  Cormorant_Garamond,
+  Manrope,
+} from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -11,6 +15,12 @@ const cormorant = Cormorant_Garamond({
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
+});
+
+const barlowCondensed = Barlow_Condensed({
+  variable: "--font-barlow-condensed",
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -35,7 +45,7 @@ export default function RootLayout({
   return (
     <html lang="fr" data-scroll-behavior="smooth">
       <body
-        className={`${cormorant.variable} ${manrope.variable} antialiased`}
+        className={`${cormorant.variable} ${manrope.variable} ${barlowCondensed.variable} antialiased`}
       >
         <a
           href="#main-content"

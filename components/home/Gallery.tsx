@@ -38,7 +38,7 @@ export default function Gallery() {
   return (
     <section
       id="gallery"
-      className="border-t border-[var(--border)] bg-[var(--surface)] py-24 sm:py-28 md:py-32 lg:py-36"
+      className="border-t border-(--border) bg-(--surface) py-24 sm:py-28 md:py-32 lg:py-36"
     >
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 md:px-10 lg:px-12 xl:px-16">
 
@@ -48,22 +48,22 @@ export default function Gallery() {
 
             <div>
               <div className="mb-6 flex items-center gap-4">
-                <span className="h-px w-10 bg-[var(--brand)]" />
+                <span className="h-px w-10 bg-(--brand)" />
 
-                <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[var(--brand)] sm:text-[11px]">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-(--brand) sm:text-[11px]">
                   La Marquise en images
                 </p>
               </div>
 
-              <h2 className="font-display max-w-2xl text-5xl font-medium leading-[0.96] tracking-tight text-[var(--foreground)] sm:text-6xl md:text-7xl">
+              <h2 className="font-display max-w-2xl text-5xl font-medium leading-[0.96] tracking-tight text-(--foreground) sm:text-6xl md:text-7xl">
                 Une atmosphère
-                <span className="block italic text-[var(--brand-light)]">
+                <span className="block italic text-(--brand-light)">
                   à découvrir.
                 </span>
               </h2>
             </div>
 
-            <p className="max-w-md text-sm leading-7 text-[var(--muted)] md:text-base md:leading-8">
+            <p className="max-w-md text-sm leading-7 text-(--muted) md:text-base md:leading-8">
               Quelques instants, détails et ambiances qui racontent l&apos;univers
               de La Marquise.
             </p>
@@ -82,7 +82,7 @@ export default function Gallery() {
               className={image.className}
             >
               <div
-                className={`group relative overflow-hidden bg-[var(--surface-soft)] ${
+                className={`group relative overflow-hidden bg-(--surface-soft) ${
                   image.featured
                     ? "min-h-90 sm:min-h-105 md:min-h-125"
                     : "min-h-60 sm:min-h-65"
