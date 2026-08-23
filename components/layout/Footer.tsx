@@ -123,10 +123,10 @@ export default function Footer() {
                   </p>
 
                   <a
-                    href="tel:+237698434343"
+                    href="tel:+237670858585"
                     className="mt-2 inline-block text-sm text-(--foreground-soft) transition-colors duration-300 hover:text-(--brand-light)"
                   >
-                    +237 6 98 43 43 43
+                    +237 6 70 85 85 85
                   </a>
                 </div>
 
