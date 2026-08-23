@@ -15,8 +15,8 @@ const gallery = [
     featured: false,
   },
   {
-    src: "/images/gallery/dish.png",
-    alt: "Plat servi à La Marquise",
+    src: "/images/gallery/team.jpg",
+    alt: "Équipe de La Marquise",
     className: "",
     featured: false,
   },

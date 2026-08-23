@@ -61,15 +61,20 @@ export default function ExperienceMenu({
     : "var(--fastfood-gold)";
 
   const normalizedSearch =
-    searchQuery.trim().toLocaleLowerCase("fr");
+    searchQuery
+      .trim()
+      .toLocaleLowerCase("fr");
 
+  /*
+   * Search is available for both
+   * Restaurant and Fast Food.
+   */
   const isSearching =
-    isFastFood &&
     normalizedSearch.length > 0;
 
   /*
-   * Filter only the active Fast Food group.
-   * Restaurant remains untouched.
+   * Search only inside the currently
+   * selected menu group.
    */
   const visibleCategories = useMemo(() => {
     if (!activeGroup) {
@@ -133,20 +138,22 @@ export default function ExperienceMenu({
 
   /*
    * Normal accordion:
-   * changing group opens its first category.
+   * changing menu group opens
+   * its first category.
    */
   useEffect(() => {
     if (!isSearching) {
       setOpenCategoryId(
-        activeGroup?.categories[0]?.id ??
-          null
+        activeGroup
+          ?.categories[0]
+          ?.id ?? null
       );
     }
   }, [activeGroup, isSearching]);
 
   /*
    * Search mode:
-   * automatically open all categories
+   * automatically open every category
    * containing matching results.
    */
   useEffect(() => {
@@ -160,7 +167,10 @@ export default function ExperienceMenu({
         (category) => category.id
       )
     );
-  }, [isSearching, visibleCategories]);
+  }, [
+    isSearching,
+    visibleCategories,
+  ]);
 
   if (!activeGroup) {
     return null;
@@ -202,6 +212,14 @@ export default function ExperienceMenu({
   const clearSearch = () => {
     setSearchQuery("");
   };
+
+  const resultCount =
+    visibleCategories.reduce(
+      (total, category) =>
+        total +
+        category.items.length,
+      0
+    );
 
   return (
     <section
@@ -272,72 +290,94 @@ export default function ExperienceMenu({
           </div>
         </Reveal>
 
-        {/* Fast Food search */}
-        {isFastFood && (
-          <div className="mt-8">
-            <label
-              htmlFor="fastfood-menu-search"
-              className="mb-3 block text-[9px] font-bold uppercase tracking-[0.24em] text-(--fastfood-gold-soft)"
-            >
-              Rechercher dans le menu
-            </label>
+        {/* Menu search */}
+        <div className="mt-8">
+          <label
+            htmlFor={`${theme}-menu-search`}
+            className={
+              isRestaurant
+                ? "mb-3 block text-[9px] font-semibold uppercase tracking-[0.24em] text-(--brand)"
+                : "mb-3 block text-[9px] font-bold uppercase tracking-[0.24em] text-(--fastfood-gold-soft)"
+            }
+          >
+            {isRestaurant
+              ? "Rechercher dans la carte"
+              : "Rechercher dans le menu"}
+          </label>
 
-            <div className="flex border border-(--fastfood-border-strong) bg-(--fastfood-deep)">
-              <div className="flex min-w-0 flex-1 items-center">
-                <span
-                  aria-hidden="true"
-                  className="pl-5 text-(--fastfood-gold-soft)"
-                >
-                  ⌕
-                </span>
+          <div
+            className={
+              isRestaurant
+                ? "flex border border-(--border-strong) bg-(--background-deep)"
+                : "flex border border-(--fastfood-border-strong) bg-(--fastfood-deep)"
+            }
+          >
+            <div className="flex min-w-0 flex-1 items-center">
+              <span
+                aria-hidden="true"
+                className={
+                  isRestaurant
+                    ? "pl-5 text-(--brand)"
+                    : "pl-5 text-(--fastfood-gold-soft)"
+                }
+              >
+                ⌕
+              </span>
 
-                <input
-                  id="fastfood-menu-search"
-                  type="search"
-                  value={searchQuery}
-                  onChange={(event) =>
-                    setSearchQuery(
-                      event.target.value
-                    )
-                  }
-                  placeholder="Pizza, burger, chicken..."
-                  autoComplete="off"
-                  className="min-h-14 w-full bg-transparent px-4 text-sm text-(--fastfood-cream) outline-none placeholder:text-(--fastfood-muted-deep)"
-                />
-              </div>
-
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={clearSearch}
-                  className="shrink-0 border-l border-(--fastfood-border) px-5 text-[9px] font-extrabold uppercase tracking-[0.16em] text-(--fastfood-gold-soft) transition-colors duration-200 hover:bg-(--fastfood-gold) hover:text-(--fastfood-ink)"
-                >
-                  Effacer
-                </button>
-              )}
+              <input
+                id={`${theme}-menu-search`}
+                type="search"
+                value={searchQuery}
+                onChange={(event) =>
+                  setSearchQuery(
+                    event.target.value
+                  )
+                }
+                placeholder={
+                  isRestaurant
+                    ? "Poulet, poisson, cocktail..."
+                    : "Pizza, burger, chicken..."
+                }
+                autoComplete="off"
+                className={
+                  isRestaurant
+                    ? "min-h-14 w-full bg-transparent px-4 text-sm text-(--foreground) outline-none placeholder:text-(--muted-subtle)"
+                    : "min-h-14 w-full bg-transparent px-4 text-sm text-(--fastfood-cream) outline-none placeholder:text-(--fastfood-muted-deep)"
+                }
+              />
             </div>
 
-            {isSearching && (
-              <p className="mt-3 text-[9px] uppercase tracking-[0.16em] text-(--fastfood-muted-deep)">
-                {visibleCategories.reduce(
-                  (total, category) =>
-                    total +
-                    category.items.length,
-                  0
-                )}{" "}
-                résultat
-                {visibleCategories.reduce(
-                  (total, category) =>
-                    total +
-                    category.items.length,
-                  0
-                ) !== 1
-                  ? "s"
-                  : ""}
-              </p>
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={clearSearch}
+                className={
+                  isRestaurant
+                    ? "shrink-0 border-l border-(--border) px-5 text-[9px] font-semibold uppercase tracking-[0.16em] text-(--brand) transition-colors duration-200 hover:bg-(--brand) hover:text-(--surface)"
+                    : "shrink-0 border-l border-(--fastfood-border) px-5 text-[9px] font-extrabold uppercase tracking-[0.16em] text-(--fastfood-gold-soft) transition-colors duration-200 hover:bg-(--fastfood-gold) hover:text-(--fastfood-ink)"
+                }
+              >
+                Effacer
+              </button>
             )}
           </div>
-        )}
+
+          {isSearching && (
+            <p
+              className={
+                isRestaurant
+                  ? "mt-3 text-[9px] uppercase tracking-[0.16em] text-(--muted-subtle)"
+                  : "mt-3 text-[9px] uppercase tracking-[0.16em] text-(--fastfood-muted-deep)"
+              }
+            >
+              {resultCount}{" "}
+              résultat
+              {resultCount !== 1
+                ? "s"
+                : ""}
+            </p>
+          )}
+        </div>
 
         {/* Groups */}
         <MenuGroupTabs
@@ -426,20 +466,42 @@ export default function ExperienceMenu({
             )}
           </div>
         ) : (
-          <div className="border-y border-(--fastfood-border) py-14 text-center">
-            <p className="font-fastfood-display text-3xl font-bold uppercase text-(--fastfood-cream)">
+          <div
+            className={
+              isRestaurant
+                ? "border-y border-(--border) py-14 text-center"
+                : "border-y border-(--fastfood-border) py-14 text-center"
+            }
+          >
+            <p
+              className={
+                isRestaurant
+                  ? "font-display text-3xl text-(--foreground)"
+                  : "font-fastfood-display text-3xl font-bold uppercase text-(--fastfood-cream)"
+              }
+            >
               Aucun résultat
             </p>
 
-            <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-(--fastfood-muted)">
-              Aucun article ne correspond à
+            <p
+              className={
+                isRestaurant
+                  ? "mx-auto mt-3 max-w-md text-sm leading-6 text-(--muted)"
+                  : "mx-auto mt-3 max-w-md text-sm leading-6 text-(--fastfood-muted)"
+              }
+            >
+              Aucun article ne correspond à{" "}
               « {searchQuery.trim()} ».
             </p>
 
             <button
               type="button"
               onClick={clearSearch}
-              className="mt-6 inline-flex min-h-11 items-center justify-center border border-(--fastfood-border-strong) px-6 text-[9px] font-extrabold uppercase tracking-[0.16em] text-(--fastfood-gold-soft) transition-colors duration-200 hover:bg-(--fastfood-gold) hover:text-(--fastfood-ink)"
+              className={
+                isRestaurant
+                  ? "mt-6 inline-flex min-h-11 items-center justify-center border border-(--border-strong) px-6 text-[9px] font-semibold uppercase tracking-[0.16em] text-(--brand) transition-colors duration-200 hover:bg-(--brand) hover:text-(--surface)"
+                  : "mt-6 inline-flex min-h-11 items-center justify-center border border-(--fastfood-border-strong) px-6 text-[9px] font-extrabold uppercase tracking-[0.16em] text-(--fastfood-gold-soft) transition-colors duration-200 hover:bg-(--fastfood-gold) hover:text-(--fastfood-ink)"
+              }
             >
               Effacer la recherche
             </button>

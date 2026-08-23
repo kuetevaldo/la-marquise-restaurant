@@ -16,10 +16,10 @@ const dishes = [
     image: "/images/saumon.png",
   },
   {
-    name: "Pizza Marquise",
+    name: "Cotelette d'agneau",
     description:
-      "Une pizza généreuse aux crevettes, légumes et fromage fondant.",
-    image: "/images/pizza.png",
+      "Une cotelette d'agneau juteuse, accompagnée de légumes grillés et d'une sauce au vin rouge.",
+    image: "/images/beof.jpg",
   },
 ];
 

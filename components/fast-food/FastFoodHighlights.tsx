@@ -159,7 +159,7 @@ export default function FastFoodHighlights() {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`Commander ${item.name} sur WhatsApp`}
-                    className="mt-5 inline-flex min-h-10 items-center gap-2 text-[9px] font-extrabold uppercase tracking-[0.17em] text-(--fastfood-gold-soft) transition-colors duration-200 hover:text-(--fastfood-cream)"
+                    className="group mt-3 inline-flex min-h-11 shrink-0 items-center justify-center gap-2 border border-(--fastfood-gold) bg-transparent px-5 text-[9px] font-extrabold uppercase tracking-[0.16em] text-(--fastfood-gold-soft) transition-all duration-300 hover:bg-(--fastfood-gold) hover:text-(--fastfood-ink)"
                   >
                     <FaWhatsapp className="text-sm" />
 
