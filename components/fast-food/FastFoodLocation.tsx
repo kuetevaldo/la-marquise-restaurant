@@ -42,17 +42,39 @@ export default function FastFoodLocation() {
               </div>
 
               <div className="border-b border-(--fastfood-border) py-5">
-                <p className="text-[9px] font-bold uppercase tracking-[0.24em] text-(--fastfood-gold-soft)">
-                  Téléphone
-                </p>
+  <p className="text-[9px] font-bold uppercase tracking-[0.24em] text-(--fastfood-gold-soft)">
+    Téléphone
+  </p>
 
-                <a
-                  href="tel:+237698434343"
-                  className="font-fastfood-display mt-2 inline-block text-3xl font-bold text-(--fastfood-cream) transition-colors duration-200 hover:text-(--fastfood-gold-soft)"
-                >
-                  +237 98 43 43 43
-                </a>
-              </div>
+  <div className="mt-2 flex flex-col gap-1">
+    <a
+      href="tel:+237698434343"
+      className="font-fastfood-display inline-block text-3xl font-bold text-(--fastfood-cream) transition-colors duration-200 hover:text-(--fastfood-gold-soft)"
+    >
+      +237 6 98 43 43 43
+    </a>
+
+    <a
+      href="tel:+237674730000"
+      className="font-fastfood-display inline-block text-3xl font-bold text-(--fastfood-cream) transition-colors duration-200 hover:text-(--fastfood-gold-soft)"
+    >
+      +237 6 74 73 00 00
+    </a>
+  </div>
+</div>
+
+<div className="border-b border-(--fastfood-border) py-5">
+  <p className="text-[9px] font-bold uppercase tracking-[0.24em] text-(--fastfood-gold-soft)">
+    Email
+  </p>
+
+  <a
+    href="mailto:lamarquisefastfood@gmail.com"
+    className="font-fastfood-display mt-2 inline-block break-all text-3xl font-bold text-(--fastfood-cream) transition-colors duration-200 hover:text-(--fastfood-gold-soft)"
+  >
+    lamarquisefastfood@gmail.com
+  </a>
+</div>
 
               <div className="border-b border-(--fastfood-border) py-5">
                 <p className="text-[9px] font-bold uppercase tracking-[0.24em] text-(--fastfood-gold-soft)">

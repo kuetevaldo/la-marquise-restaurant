@@ -212,7 +212,7 @@ export default function ReservationSection() {
   return (
     <section
       id="reservation"
-      className="border-t border-[var(--border)] bg-[var(--surface)] py-24 sm:py-28 md:py-32 lg:py-36"
+      className="border-t border-(--border) bg-(--surface) py-24 sm:py-28 md:py-32 lg:py-36"
     >
       <div className="mx-auto grid w-full max-w-7xl gap-14 px-6 sm:px-8 md:px-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16 lg:px-12 xl:px-16">
 
@@ -221,62 +221,56 @@ export default function ReservationSection() {
           <div className="max-w-xl lg:sticky lg:top-[calc(var(--navbar-height)+1rem)]">
 
             <div className="mb-6 flex items-center gap-4">
-              <span className="h-px w-10 bg-[var(--brand)]" />
+              <span className="h-px w-10 bg-(--brand)" />
 
-              <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[var(--brand)] sm:text-[11px]">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-(--brand) sm:text-[11px]">
                 Réservation
               </p>
             </div>
 
-            <h2 className="font-display text-5xl font-medium leading-[0.96] tracking-tight text-[var(--foreground)] sm:text-6xl md:text-7xl">
+            <h2 className="font-display text-5xl font-medium leading-[0.96] tracking-tight text-(--foreground) sm:text-6xl md:text-7xl">
               Votre table
 
-              <span className="mt-2 block italic text-[var(--brand-light)]">
+              <span className="mt-2 block italic text-(--brand-light)">
                 vous attend.
               </span>
             </h2>
 
-            <p className="mt-7 max-w-lg text-sm leading-7 text-[var(--muted)] md:text-base md:leading-8">
+            <p className="mt-7 max-w-lg text-sm leading-7 text-(--muted) md:text-base md:leading-8">
               Indiquez vos préférences et envoyez votre
               demande directement à La Marquise sur WhatsApp.
             </p>
 
-            <div className="mt-10 border-t border-[var(--border)]">
+            <div className="mt-10 border-t border-(--border)">
 
-              <div className="border-b border-[var(--border)] py-5">
-                <p className="text-[9px] font-semibold uppercase tracking-[0.26em] text-[var(--muted-soft)]">
+              <div className="border-b border-(--border) py-5">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.26em] text-(--muted-soft)">
                   Horaires
                 </p>
 
-                <p className="font-display mt-2 text-2xl text-[var(--foreground)]">
+                <p className="font-display mt-2 text-2xl text-(--foreground)">
                   Tous les jours
                 </p>
 
-                <p className="mt-1 text-sm text-[var(--muted-soft)]">
+                <p className="mt-1 text-sm text-(--muted-soft)">
                   11:00 — 23:30
                 </p>
 
-                <p className="mt-2 text-xs text-[var(--muted-subtle)]">
+                <p className="mt-2 text-xs text-(--muted-subtle)">
                   Dernière réservation à 22:30
                 </p>
               </div>
 
-              <div className="border-b border-[var(--border)] py-5">
-                <p className="text-[9px] font-semibold uppercase tracking-[0.26em] text-[var(--muted-soft)]">
+              <div className="border-b border-(--border) py-5">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.26em] text-(--muted-soft)">
                   Téléphone
                 </p>
 
                 <div className="mt-2 flex flex-col items-start gap-1">
-                  <a
-                    href="tel:+237698434343"
-                    className="font-display text-2xl text-[var(--foreground)] transition-colors duration-300 hover:text-[var(--brand-light)]"
-                  >
-                    +237 6 98 43 43 43
-                  </a>
-
+                    
                   <a
                     href="tel:+237670858585"
-                    className="font-display text-2xl text-[var(--foreground)] transition-colors duration-300 hover:text-[var(--brand-light)]"
+                    className="font-display text-2xl text-(--foreground) transition-colors duration-300 hover:text-(--brand-light)"
                   >
                     +237 6 70 85 85 85
                   </a>
@@ -286,9 +280,9 @@ export default function ReservationSection() {
             </div>
 
             <div className="mt-7 flex items-start gap-3">
-              <FaWhatsapp className="mt-1 shrink-0 text-lg text-[var(--brand)]" />
+              <FaWhatsapp className="mt-1 shrink-0 text-lg text-(--brand)" />
 
-              <p className="max-w-md text-xs leading-6 text-[var(--muted-soft)]">
+              <p className="max-w-md text-xs leading-6 text-(--muted-soft)">
                 Votre demande sera préparée automatiquement puis
                 ouverte dans WhatsApp. La réservation reste soumise
                 à la confirmation du restaurant.
@@ -302,16 +296,16 @@ export default function ReservationSection() {
         <Reveal delay={0.12} y={28}>
           <form
             onSubmit={handleSubmit}
-            className="border border-[var(--border)] bg-[var(--background)] p-6 sm:p-8 md:p-10"
+            className="border border-(--border) bg-(--background) p-6 sm:p-8 md:p-10"
             noValidate
           >
 
             <div className="mb-8">
-              <p className="font-display text-3xl text-[var(--foreground)] sm:text-4xl">
+              <p className="font-display text-3xl text-(--foreground) sm:text-4xl">
                 Demande de réservation
               </p>
 
-              <p className="mt-2 text-sm leading-6 text-[var(--muted-soft)]">
+              <p className="mt-2 text-sm leading-6 text-(--muted-soft)">
                 Tous les champs marqués d&apos;un * sont
                 obligatoires.
               </p>
@@ -323,7 +317,7 @@ export default function ReservationSection() {
               <div className="sm:col-span-2">
                 <label
                   htmlFor="reservation-name"
-                  className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.24em] text-[var(--muted-soft)]"
+                  className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.24em] text-(--muted-soft)"
                 >
                   Nom complet *
                 </label>
@@ -338,7 +332,7 @@ export default function ReservationSection() {
                     setName(event.target.value)
                   }
                   placeholder="Votre nom"
-                  className="min-h-14 w-full border border-[var(--border)] bg-[var(--surface-elevated)] px-4 text-sm text-[var(--foreground)] outline-none transition-colors duration-300 placeholder:text-[var(--muted-subtle)] focus:border-[var(--brand)]"
+                  className="min-h-14 w-full border border-(--border) bg-(--surface-elevated) px-4 text-sm text-(--foreground) outline-none transition-colors duration-300 placeholder:text-(--muted-subtle) focus:border-(--brand)"
                 />
               </div>
 
@@ -346,7 +340,7 @@ export default function ReservationSection() {
               <div className="sm:col-span-2">
                 <label
                   htmlFor="reservation-phone"
-                  className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.24em] text-[var(--muted-soft)]"
+                  className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.24em] text-(--muted-soft)"
                 >
                   Téléphone *
                 </label>
@@ -362,7 +356,7 @@ export default function ReservationSection() {
                     setPhone(event.target.value)
                   }
                   placeholder="+237 6XX XXX XXX"
-                  className="min-h-14 w-full border border-[var(--border)] bg-[var(--surface-elevated)] px-4 text-sm text-[var(--foreground)] outline-none transition-colors duration-300 placeholder:text-[var(--muted-subtle)] focus:border-[var(--brand)]"
+                  className="min-h-14 w-full border border-(--border) bg-(--surface-elevated) px-4 text-sm text-(--foreground) outline-none transition-colors duration-300 placeholder:text-(--muted-subtle) focus:border-(--brand)"
                 />
               </div>
 
@@ -370,7 +364,7 @@ export default function ReservationSection() {
               <div>
                 <label
                   htmlFor="reservation-guests"
-                  className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.24em] text-[var(--muted-soft)]"
+                  className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.24em] text-(--muted-soft)"
                 >
                   Nombre de personnes *
                 </label>
@@ -381,7 +375,7 @@ export default function ReservationSection() {
                   onChange={(event) =>
                     setGuests(event.target.value)
                   }
-                  className="min-h-14 w-full border border-[var(--border)] bg-[var(--surface-elevated)] px-4 text-sm text-[var(--foreground)] outline-none transition-colors duration-300 focus:border-[var(--brand)]"
+                  className="min-h-14 w-full border border-(--border) bg-(--surface-elevated) px-4 text-sm text-(--foreground) outline-none transition-colors duration-300 focus:border-(--brand)"
                 >
                   {Array.from(
                     { length: 12 },
@@ -408,7 +402,7 @@ export default function ReservationSection() {
               <div>
                 <label
                   htmlFor="reservation-date"
-                  className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.24em] text-[var(--muted-soft)]"
+                  className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.24em] text-(--muted-soft)"
                 >
                   Date *
                 </label>
@@ -420,7 +414,7 @@ export default function ReservationSection() {
                   min={today}
                   value={date}
                   onChange={handleDateChange}
-                  className="min-h-14 w-full border border-[var(--border)] bg-[var(--surface-elevated)] px-4 text-sm text-[var(--foreground)] outline-none transition-colors duration-300 focus:border-[var(--brand)]"
+                  className="min-h-14 w-full border border-(--border) bg-(--surface-elevated) px-4 text-sm text-(--foreground) outline-none transition-colors duration-300 focus:border-(--brand)"
                 />
               </div>
 
@@ -428,7 +422,7 @@ export default function ReservationSection() {
               <div className="sm:col-span-2">
                 <label
                   htmlFor="reservation-time"
-                  className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.24em] text-[var(--muted-soft)]"
+                  className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.24em] text-(--muted-soft)"
                 >
                   Heure *
                 </label>
@@ -444,7 +438,7 @@ export default function ReservationSection() {
                   disabled={
                     !date || noMoreSlotsToday
                   }
-                  className="min-h-14 w-full border border-[var(--border)] bg-[var(--surface-elevated)] px-4 text-sm text-[var(--foreground)] outline-none transition-colors duration-300 focus:border-[var(--brand)] disabled:cursor-not-allowed disabled:opacity-40"
+                  className="min-h-14 w-full border border-(--border) bg-(--surface-elevated) px-4 text-sm text-(--foreground) outline-none transition-colors duration-300 focus:border-(--brand) disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   {!date && (
                     <option value="">
@@ -480,14 +474,14 @@ export default function ReservationSection() {
 
                 {date === today &&
                   availableTimeSlots.length > 0 && (
-                    <p className="mt-2 text-[10px] leading-5 text-[var(--muted-subtle)]">
+                    <p className="mt-2 text-[10px] leading-5 text-(--muted-subtle)">
                       Les créneaux déjà passés aujourd&apos;hui
                       ont été automatiquement retirés.
                     </p>
                   )}
 
                 {noMoreSlotsToday && (
-                  <p className="mt-2 text-xs leading-5 text-[var(--brand)]">
+                  <p className="mt-2 text-xs leading-5 text-(--brand)">
                     Les réservations sont terminées pour
                     aujourd&apos;hui. Veuillez sélectionner une
                     autre date.
@@ -499,7 +493,7 @@ export default function ReservationSection() {
               <div className="sm:col-span-2">
                 <label
                   htmlFor="reservation-note"
-                  className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.24em] text-[var(--muted-soft)]"
+                  className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.24em] text-(--muted-soft)"
                 >
                   Demande particulière
                 </label>
@@ -513,10 +507,10 @@ export default function ReservationSection() {
                   rows={4}
                   maxLength={500}
                   placeholder="Anniversaire, préférence de table, occasion spéciale..."
-                  className="w-full resize-none border border-[var(--border)] bg-[var(--surface-elevated)] px-4 py-4 text-sm leading-6 text-[var(--foreground)] outline-none transition-colors duration-300 placeholder:text-[var(--muted-subtle)] focus:border-[var(--brand)]"
+                  className="w-full resize-none border border-(--border) bg-(--surface-elevated) px-4 py-4 text-sm leading-6 text-(--foreground) outline-none transition-colors duration-300 placeholder:text-(--muted-subtle) focus:border-(--brand)"
                 />
 
-                <p className="mt-2 text-right text-[10px] text-[var(--muted-subtle)]">
+                <p className="mt-2 text-right text-[10px] text-(--muted-subtle)">
                   {note.length}/500
                 </p>
               </div>
@@ -540,7 +534,7 @@ export default function ReservationSection() {
             <button
               type="submit"
               disabled={noMoreSlotsToday}
-              className="group mt-8 inline-flex min-h-14 w-full items-center justify-center gap-3 bg-[var(--brand)] px-8 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--surface)] transition-colors duration-300 hover:bg-[var(--brand-light)] disabled:cursor-not-allowed disabled:bg-[var(--muted-soft)] disabled:text-[var(--surface)] sm:text-[11px]"
+              className="group mt-8 inline-flex min-h-14 w-full items-center justify-center gap-3 bg-(--brand) px-8 text-[10px] font-semibold uppercase tracking-[0.18em] text-(--surface) transition-colors duration-300 hover:bg-(--brand-light) disabled:cursor-not-allowed disabled:bg-(--muted-soft) disabled:text-(--surface) sm:text-[11px]"
             >
               <FaWhatsapp className="text-lg" />
 
@@ -551,7 +545,7 @@ export default function ReservationSection() {
               </span>
             </button>
 
-            <p className="mx-auto mt-4 max-w-lg text-center text-[11px] leading-5 text-[var(--muted-subtle)]">
+            <p className="mx-auto mt-4 max-w-lg text-center text-[11px] leading-5 text-(--muted-subtle)">
               Vous serez redirigé vers WhatsApp pour envoyer
               votre demande. Celle-ci ne constitue pas une
               confirmation automatique de votre table.

@@ -59,10 +59,10 @@ export default function LocationSection() {
                 </p>
 
                 <a
-                  href="tel:+237698434343"
+                  href="tel:+237670858585"
                   className="font-display mt-2 inline-block text-2xl text-(--foreground) transition-colors duration-300 hover:text-(--brand-light)"
                 >
-                  +237 6 98 43 43 43
+                  +237 6 70 85 85 85
                 </a>
               </div>
 
@@ -114,7 +114,7 @@ export default function LocationSection() {
               </a>
 
               <a
-                href="tel:+237698434343"
+                href="tel:+237670858585"
                 className="group inline-flex min-h-14 items-center justify-center gap-3 border border-(--border-strong) px-7 text-[10px] font-semibold uppercase tracking-[0.16em] text-(--foreground) transition-colors duration-300 hover:border-(--brand) hover:bg-(--surface) hover:text-(--brand-light) sm:px-8 sm:text-[11px]"
               >
                 Appeler

@@ -53,9 +53,9 @@ export default function FastFoodHero() {
           >
             <span className="h-px w-10 bg-(--fastfood-gold)" />
 
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.28em] text-(--fastfood-gold-soft)">
-              La Marquise Fast Food
-            </p>
+            <p className="mb-2 -translate-y-2 text-[10px] font-extrabold uppercase tracking-[0.3em] text-(--fastfood-gold-soft)">
+  La Marquise Fast Food
+</p>
           </div>
 
           {/* Main headline */}

@@ -254,12 +254,12 @@ video {
 }
 
 .fastfood-hero-content {
-  transform: translateY(-2.25rem);
+  transform: translateY(-1.5rem);
 }
 
 @media (min-width: 48rem) {
   .fastfood-hero-content {
-    transform: none;
+    transform: translateY(1rem);
   }
 }
 
