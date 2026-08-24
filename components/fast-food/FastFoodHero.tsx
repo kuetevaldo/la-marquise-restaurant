@@ -2,7 +2,7 @@ import Image from "next/image";
 import type { CSSProperties } from "react";
 
 const whatsappUrl =
-  "https://wa.me/237670858585?text=" +
+  "https://wa.me/237698434343?text=" +
   encodeURIComponent(
     "Bonjour La Marquise Fast Food 👋🏾\nJe souhaite passer une commande."
   );
@@ -53,9 +53,9 @@ export default function FastFoodHero() {
           >
             <span className="h-px w-10 bg-(--fastfood-gold)" />
 
-            <p className="mb-2 -translate-y-2 text-[10px] font-extrabold uppercase tracking-[0.3em] text-(--fastfood-gold-soft)">
-  La Marquise Fast Food
-</p>
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.28em] text-(--fastfood-gold-soft)">
+              La Marquise Fast Food
+            </p>
           </div>
 
           {/* Main headline */}
