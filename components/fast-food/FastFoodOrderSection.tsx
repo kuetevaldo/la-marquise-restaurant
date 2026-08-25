@@ -53,14 +53,14 @@ export default function FastFoodOrderSection() {
           </div>
 
           <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-10 inline-flex min-h-14 w-full items-center justify-center gap-3 bg-[#fff3de] px-8 text-[10px] font-bold uppercase tracking-[0.18em] text-[#180b0a] transition-transform duration-200 hover:-translate-y-0.5 sm:w-auto"
-          >
-            <FaWhatsapp className="text-lg" />
-            Commander sur WhatsApp
-          </a>
+  href={whatsappUrl}
+  target="_blank"
+  rel="noreferrer"
+ className="group mt-6 inline-flex min-h-14 items-center justify-center gap-3 border border-(--fastfood-gold) bg-(--fastfood-gold) px-7 text-[10px] font-extrabold uppercase tracking-[0.18em] text-(--fastfood-ink) transition-all duration-300 hover:bg-transparent hover:text-(--fastfood-gold-soft) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--fastfood-gold)"
+>
+  <FaWhatsapp className="text-lg transition-transform duration-300 group-hover:scale-110" />
+  Commander sur WhatsApp
+</a>
         </div>
       </div>
     </section>
